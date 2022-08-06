@@ -1,4 +1,4 @@
-package prateek_gupta.foody
+package prateek_gupta.foody.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,7 +10,7 @@ import prateek_gupta.foody.util.Constants.Companion.QUERY_FILL_INGREDIENTS
 import prateek_gupta.foody.util.Constants.Companion.QUERY_NUMBER
 import prateek_gupta.foody.util.Constants.Companion.QUERY_TYPE
 
-class RecipesViewModel(application: MyApplication) : AndroidViewModel(application) {
+class RecipesViewModel(application: Application) : AndroidViewModel(application) {
 
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()

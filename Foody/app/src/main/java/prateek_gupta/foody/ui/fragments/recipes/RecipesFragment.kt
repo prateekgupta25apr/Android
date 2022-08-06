@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_recipes.view.*
-import prateek_gupta.foody.MainViewModel
+import prateek_gupta.foody.viewmodels.MainViewModel
 import prateek_gupta.foody.R
-import prateek_gupta.foody.RecipesViewModel
+import prateek_gupta.foody.viewmodels.RecipesViewModel
 import prateek_gupta.foody.adapters.RecipesAdapter
 import prateek_gupta.foody.util.NetworkResult
 

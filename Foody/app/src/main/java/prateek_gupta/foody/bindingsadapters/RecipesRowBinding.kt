@@ -15,7 +15,9 @@ class RecipesRowBinding {
         @BindingAdapter("loadImageFromUrl")
         @JvmStatic
         fun loadImageFromUrl(imageView: ImageView,url:String){
-            imageView.load(url)
+            imageView.load(url){
+                crossfade(600)
+            }
         }
 
         @BindingAdapter("setNumberOfLikes")

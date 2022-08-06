@@ -1,23 +1,25 @@
-package prateek_gupta.foody
+package prateek_gupta.foody.viewmodels
 
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import prateek_gupta.foody.data.Repository
 import prateek_gupta.foody.models.FoodRecipe
 import prateek_gupta.foody.util.NetworkResult
 import retrofit2.Response
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val repository: Repository,
-    application: MyApplication
+    application: Application
 ) :
     AndroidViewModel(application) {
 
