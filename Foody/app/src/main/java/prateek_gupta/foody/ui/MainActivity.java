@@ -1,4 +1,4 @@
-package prateek_gupta.foody;
+package prateek_gupta.foody.ui;
 
 import android.os.Bundle;
 
@@ -10,6 +10,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import prateek_gupta.foody.R;
 
 public class MainActivity extends AppCompatActivity {
 

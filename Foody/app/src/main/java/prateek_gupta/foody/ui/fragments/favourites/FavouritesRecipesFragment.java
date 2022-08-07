@@ -1,4 +1,4 @@
-package prateek_gupta.foody;
+package prateek_gupta.foody.ui.fragments.favourites;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import prateek_gupta.foody.R;
 
 public class FavouritesRecipesFragment extends Fragment {
 
