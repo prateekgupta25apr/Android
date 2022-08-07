@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import prateek_gupta.foody.FoodRecipesApi
+import prateek_gupta.foody.data.network.FoodRecipesApi
 import prateek_gupta.foody.util.Constants.Companion.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

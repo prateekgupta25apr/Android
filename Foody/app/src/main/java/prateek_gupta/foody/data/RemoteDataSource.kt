@@ -1,6 +1,6 @@
 package prateek_gupta.foody.data
 
-import prateek_gupta.foody.FoodRecipesApi
+import prateek_gupta.foody.data.network.FoodRecipesApi
 import prateek_gupta.foody.models.FoodRecipe
 import retrofit2.Response
 import javax.inject.Inject

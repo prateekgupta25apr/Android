@@ -1,4 +1,4 @@
-package prateek_gupta.foody
+package prateek_gupta.foody.data.network
 
 import prateek_gupta.foody.models.FoodRecipe
 import retrofit2.Response
