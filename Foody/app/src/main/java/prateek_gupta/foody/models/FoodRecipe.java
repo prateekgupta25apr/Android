@@ -6,5 +6,5 @@ import java.util.List;
 
 public class FoodRecipe {
     @SerializedName("results")
-    List<Result> results;
+   public List<Result> results;
 }
