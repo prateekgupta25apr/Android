@@ -26,7 +26,6 @@ import prateek_gupta.foody.viewmodels.RecipesViewModel;
 @AndroidEntryPoint
 public class RecipesFragment extends Fragment {
 
-    private static final String TAG = "RecipesFragment";
     public MainViewModel mainViewModel;
 
     public RecipesViewModel recipesViewModel;
@@ -58,7 +57,6 @@ public class RecipesFragment extends Fragment {
         mainViewModel.recipesResponse.observe(this.getViewLifecycleOwner(),response->{
             if (response instanceof NetworkResult.Success){
                 hideShimmerEffect();
-                Log.d(TAG, "requestApiData: Success");
                 if (response.data!=null)mAdapter.setData(response.data);
             }
             else if (response instanceof NetworkResult.Error){

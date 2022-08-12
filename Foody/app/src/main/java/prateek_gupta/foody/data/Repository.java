@@ -16,8 +16,4 @@ public class Repository {
     public RemoteDataSource getRemote() {
         return remote;
     }
-
-    public void setRemote(RemoteDataSource remote) {
-        this.remote = remote;
-    }
 }

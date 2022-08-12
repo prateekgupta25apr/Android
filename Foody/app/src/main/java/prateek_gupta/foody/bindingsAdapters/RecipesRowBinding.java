@@ -45,7 +45,7 @@ public class RecipesRowBinding {
     @BindingAdapter("applyVeganColor")
     @JvmStatic
     public static void applyVeganColor(View view,Boolean vegan){
-        if (vegan!=null&&vegan){
+        if (vegan){
             if (view instanceof TextView)
                 ((TextView) view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.green));
             else if (view instanceof ImageView)

@@ -7,7 +7,6 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -30,8 +29,6 @@ import retrofit2.Response;
 @HiltViewModel
 public class MainViewModel extends AndroidViewModel {
 
-    private static final String TAG = "MainViewModel";
-
     Repository repository;
     Application application;
 
@@ -52,7 +49,6 @@ public class MainViewModel extends AndroidViewModel {
         recipesResponse.setValue(new NetworkResult.Loading<>());
         if (hasInternetConnection()) {
             try {
-                Log.d(TAG, "getRecipesSafeCall: Calling repository");
                 Call<FoodRecipe> response = repository.getRemote().getRecipes(queries);
                 response.enqueue(new Callback<FoodRecipe>() {
                     @Override
@@ -62,7 +58,6 @@ public class MainViewModel extends AndroidViewModel {
 
                     @Override
                     public void onFailure(Call<FoodRecipe> call, Throwable t) {
-                        Log.d(TAG, "onFailure: Failure");
                     }
                 });
 
@@ -74,7 +69,6 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     NetworkResult<FoodRecipe> handleFoodRecipesResponse(Response<FoodRecipe> response) {
-        Log.d(TAG, "handleFoodRecipesResponse: Started");
         if (response.message().toString().contains("timeout"))
             return new NetworkResult.Error<>("Timeout");
         else if (response.code() == 402)
@@ -83,7 +77,6 @@ public class MainViewModel extends AndroidViewModel {
             return new NetworkResult.Error<>("Recipes not found.");
         } else if (response.isSuccessful()) {
             FoodRecipe foodRecipe = response.body();
-            Log.d(TAG, "handleFoodRecipesResponse: response code : "+response.code());
             return new NetworkResult.Success<>(foodRecipe);
         } else return new NetworkResult.Error<>(response.message());
     }

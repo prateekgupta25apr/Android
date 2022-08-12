@@ -4,7 +4,6 @@ import java.util.Map;
 
 import prateek_gupta.foody.models.FoodRecipe;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
 

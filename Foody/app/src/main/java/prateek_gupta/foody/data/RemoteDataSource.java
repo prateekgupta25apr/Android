@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import prateek_gupta.foody.data.network.FoodRecipesApi;
 import prateek_gupta.foody.models.FoodRecipe;
 import retrofit2.Call;
-import retrofit2.Response;
 
 public class RemoteDataSource {
 
