@@ -6,6 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -21,15 +23,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 import prateek_gupta.foody.data.Repository;
 import prateek_gupta.foody.models.FoodRecipe;
 import prateek_gupta.foody.util.NetworkResult;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 @HiltViewModel
 public class MainViewModel extends AndroidViewModel {
 
+    private static final String TAG = "MainViewModel";
+
     Repository repository;
     Application application;
 
-    MutableLiveData<NetworkResult<FoodRecipe>> recipesResponse = new MutableLiveData<>();
+    public MutableLiveData<NetworkResult<FoodRecipe>> recipesResponse = new MutableLiveData<>();
 
     @Inject
     public MainViewModel(@NonNull @NotNull Application application, Repository repository, Application application1) {
@@ -38,7 +44,7 @@ public class MainViewModel extends AndroidViewModel {
         this.application = application1;
     }
 
-    void getRecipes(Map<String, String> queries) {
+    public void getRecipes(Map<String, String> queries) {
         getRecipesSafeCall(queries);
     }
 
@@ -46,16 +52,29 @@ public class MainViewModel extends AndroidViewModel {
         recipesResponse.setValue(new NetworkResult.Loading<>());
         if (hasInternetConnection()) {
             try {
-                Response<FoodRecipe> response = repository.getRemote().getRecipes(queries);
-                recipesResponse.setValue(handleFoodRecipesResponse(response));
+                Log.d(TAG, "getRecipesSafeCall: Calling repository");
+                Call<FoodRecipe> response = repository.getRemote().getRecipes(queries);
+                response.enqueue(new Callback<FoodRecipe>() {
+                    @Override
+                    public void onResponse(Call<FoodRecipe> call, Response<FoodRecipe> response) {
+                        recipesResponse.setValue(handleFoodRecipesResponse(response));
+                    }
+
+                    @Override
+                    public void onFailure(Call<FoodRecipe> call, Throwable t) {
+                        Log.d(TAG, "onFailure: Failure");
+                    }
+                });
+
 
             } catch (Exception e) {
-                recipesResponse.setValue(new NetworkResult.Error<>("Recipes not found."));
+                recipesResponse.setValue(new NetworkResult.Error<>("Recipes not found. 1"));
             }
         } else recipesResponse.setValue(new NetworkResult.Error<>("No Internet Connection."));
     }
 
     NetworkResult<FoodRecipe> handleFoodRecipesResponse(Response<FoodRecipe> response) {
+        Log.d(TAG, "handleFoodRecipesResponse: Started");
         if (response.message().toString().contains("timeout"))
             return new NetworkResult.Error<>("Timeout");
         else if (response.code() == 402)
@@ -64,6 +83,7 @@ public class MainViewModel extends AndroidViewModel {
             return new NetworkResult.Error<>("Recipes not found.");
         } else if (response.isSuccessful()) {
             FoodRecipe foodRecipe = response.body();
+            Log.d(TAG, "handleFoodRecipesResponse: response code : "+response.code());
             return new NetworkResult.Success<>(foodRecipe);
         } else return new NetworkResult.Error<>(response.message());
     }

@@ -6,33 +6,33 @@ import java.util.List;
 
 public class Result {
     @SerializedName("aggregateLikes")
-    Integer aggregateLikes;
+    public Integer aggregateLikes;
     @SerializedName("cheap")
-    Boolean cheap;
+    public Boolean cheap;
     @SerializedName("dairyFree")
-    Boolean dairyFree;
+    public Boolean dairyFree;
     @SerializedName("extendedIngredients")
-    List<ExtendedIngredient> extendedIngredients;
+    public List<ExtendedIngredient> extendedIngredients;
     @SerializedName("glutenFree")
-    Boolean glutenFree;
+    public Boolean glutenFree;
     @SerializedName("id")
-    Integer id;
+    public Integer id;
     @SerializedName("image")
-    String image;
+    public String image;
     @SerializedName("readyInMinutes")
-    Integer readyInMinutes;
+    public Integer readyInMinutes;
     @SerializedName("sourceName")
-    String sourceName;
+    public String sourceName;
     @SerializedName("sourceUrl")
-    String sourceUrl;
+    public String sourceUrl;
     @SerializedName("summary")
-    String summary;
+    public String summary;
     @SerializedName("title")
-    String title;
+    public String title;
     @SerializedName("vegan")
-    Boolean vegan;
+    public Boolean vegan;
     @SerializedName("vegetarian")
-    Boolean vegetarian;
+    public Boolean vegetarian;
     @SerializedName("veryHealthy")
-    Boolean veryHealthy;
+    public Boolean veryHealthy;
 }

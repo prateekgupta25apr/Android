@@ -11,8 +11,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import prateek_gupta.foody.R;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     NavController navController;

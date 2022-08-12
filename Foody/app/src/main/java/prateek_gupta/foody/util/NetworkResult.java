@@ -1,8 +1,8 @@
 package prateek_gupta.foody.util;
 
 public class NetworkResult<T> {
-    T data ;
-    String message;
+    public T data ;
+    public String message;
 
     public NetworkResult() {
     }

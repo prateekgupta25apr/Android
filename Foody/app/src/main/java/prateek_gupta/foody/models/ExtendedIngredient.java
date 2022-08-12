@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class ExtendedIngredient {
     @SerializedName("amount")
-    Double amount ;
+    public Double amount ;
     @SerializedName("consistency")
-    String consistency;
+    public String consistency;
     @SerializedName("image")
-    String image;
+    public String image;
     @SerializedName("name")
-    String name;
+    public String name;
     @SerializedName("original")
-    String original;
+    public String original;
     @SerializedName("unit")
-    String unit;
+    public String unit;
 }
