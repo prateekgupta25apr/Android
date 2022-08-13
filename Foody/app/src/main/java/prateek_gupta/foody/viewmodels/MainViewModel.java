@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -52,12 +51,12 @@ public class MainViewModel extends AndroidViewModel {
                 Call<FoodRecipe> response = repository.getRemote().getRecipes(queries);
                 response.enqueue(new Callback<FoodRecipe>() {
                     @Override
-                    public void onResponse(Call<FoodRecipe> call, Response<FoodRecipe> response) {
+                    public void onResponse(@NotNull Call<FoodRecipe> call, @NotNull Response<FoodRecipe> response) {
                         recipesResponse.setValue(handleFoodRecipesResponse(response));
                     }
 
                     @Override
-                    public void onFailure(Call<FoodRecipe> call, Throwable t) {
+                    public void onFailure(@NotNull Call<FoodRecipe> call, @NotNull Throwable t) {
                     }
                 });
 
@@ -69,7 +68,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     NetworkResult<FoodRecipe> handleFoodRecipesResponse(Response<FoodRecipe> response) {
-        if (response.message().toString().contains("timeout"))
+        if (response.message().contains("timeout"))
             return new NetworkResult.Error<>("Timeout");
         else if (response.code() == 402)
             return new NetworkResult.Error<>("API Key Limited.");
