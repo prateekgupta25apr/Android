@@ -1,7 +1,6 @@
 package prateek_gupta.foody.models
 
 import com.google.gson.annotations.SerializedName
-import prateek_gupta.foody.models.ExtendedIngredient
 
 data class Result(
     @SerializedName("aggregateLikes")
