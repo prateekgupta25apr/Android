@@ -10,4 +10,7 @@ public class Constants {
     public static final String QUERY_DIET = "diet";
     public static final String QUERY_ADD_RECIPE_INFORMATION = "addRecipeInformation";
     public static final String QUERY_FILL_INGREDIENTS = "fillIngredients";
+
+    public static final String DATABASE_NAME="recipes_database";
+    public static final String RECIPES_TABLE="recipes_table";
 }
