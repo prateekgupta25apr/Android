@@ -6,19 +6,24 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import kotlinx.coroutines.Dispatchers;
 import prateek_gupta.foody.data.Repository;
+import prateek_gupta.foody.data.database.RecipesEntity;
 import prateek_gupta.foody.models.FoodRecipe;
 import prateek_gupta.foody.util.NetworkResult;
 import retrofit2.Call;
@@ -27,19 +32,32 @@ import retrofit2.Response;
 
 @HiltViewModel
 public class MainViewModel extends AndroidViewModel {
+    private static final String TAG = "MainViewModel";
 
     Repository repository;
     Application application;
 
     public MutableLiveData<NetworkResult<FoodRecipe>> recipesResponse = new MutableLiveData<>();
-
+    public LiveData<List<RecipesEntity>> readRecipes;
     @Inject
-    public MainViewModel(@NonNull @NotNull Application application, Repository repository, Application application1) {
+    public MainViewModel(@NonNull @NotNull Application application, Repository repository) {
         super(application);
         this.repository = repository;
-        this.application = application1;
+        this.application = application;
     }
 
+    public LiveData<List<RecipesEntity>> getReadRecipes() {
+        readRecipes=repository.getLocal().readDatabase();
+        return readRecipes;
+    }
+
+    /** ROOM DATABASE */
+
+    private void insertRecipes(RecipesEntity recipesEntity) {
+        repository.getLocal().insertRecipes(recipesEntity);
+    }
+
+    /** RETROFIT */
     public void getRecipes(Map<String, String> queries) {
         getRecipesSafeCall(queries);
     }
@@ -53,6 +71,10 @@ public class MainViewModel extends AndroidViewModel {
                     @Override
                     public void onResponse(@NotNull Call<FoodRecipe> call, @NotNull Response<FoodRecipe> response) {
                         recipesResponse.setValue(handleFoodRecipesResponse(response));
+                        if (recipesResponse.getValue()!=null){
+                            FoodRecipe foodRecipe = recipesResponse.getValue().data;
+                            offlineCacheRecipes(foodRecipe);
+                        }
                     }
 
                     @Override
@@ -65,6 +87,11 @@ public class MainViewModel extends AndroidViewModel {
                 recipesResponse.setValue(new NetworkResult.Error<>("Recipes not found. 1"));
             }
         } else recipesResponse.setValue(new NetworkResult.Error<>("No Internet Connection."));
+    }
+
+    private void offlineCacheRecipes(FoodRecipe foodRecipe) {
+        RecipesEntity recipesEntity = new RecipesEntity(foodRecipe);
+        insertRecipes(recipesEntity);
     }
 
     NetworkResult<FoodRecipe> handleFoodRecipesResponse(Response<FoodRecipe> response) {

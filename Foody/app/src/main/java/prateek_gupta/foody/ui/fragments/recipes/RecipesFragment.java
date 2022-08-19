@@ -1,18 +1,16 @@
 package prateek_gupta.foody.ui.fragments.recipes;
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.todkars.shimmer.ShimmerRecyclerView;
 
@@ -25,6 +23,8 @@ import prateek_gupta.foody.viewmodels.RecipesViewModel;
 
 @AndroidEntryPoint
 public class RecipesFragment extends Fragment {
+
+    private static final String TAG = "RecipesFragment";
 
     public MainViewModel mainViewModel;
 
@@ -48,11 +48,23 @@ public class RecipesFragment extends Fragment {
         mView=inflater.inflate(R.layout.fragment_recipes, container, false);
 
         setupRecyclerView();
-        requestApiData();
+        readDatabase();
         return mView;
     }
 
+    void readDatabase(){
+        mainViewModel.getReadRecipes().observe(this.getViewLifecycleOwner(),database->{
+            if (database.size()>0){
+                Log.d(TAG, "readDatabase: called");
+                mAdapter.setData(database.get(0).getFoodRecipe());
+                hideShimmerEffect();
+            }
+            else requestApiData();
+        });
+    }
+
     void requestApiData(){
+        Log.d(TAG, "requestApiData: called");
         mainViewModel.getRecipes(recipesViewModel.applyQueries());
         mainViewModel.recipesResponse.observe(this.getViewLifecycleOwner(),response->{
             if (response instanceof NetworkResult.Success){
@@ -61,6 +73,7 @@ public class RecipesFragment extends Fragment {
             }
             else if (response instanceof NetworkResult.Error){
                 hideShimmerEffect();
+                loadDataFromCache();
                 Toast.makeText(
                         requireContext(),
                         response.message,
@@ -69,6 +82,14 @@ public class RecipesFragment extends Fragment {
             }
             else if (response instanceof NetworkResult.Loading){
                 hideShimmerEffect();
+            }
+        });
+    }
+
+    void loadDataFromCache(){
+        mainViewModel.getReadRecipes().observe(this.getViewLifecycleOwner(),database->{
+            if (database.size()>0){
+                mAdapter.setData(database.get(0).getFoodRecipe());
             }
         });
     }

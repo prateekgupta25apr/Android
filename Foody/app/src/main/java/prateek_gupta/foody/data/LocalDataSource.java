@@ -1,5 +1,7 @@
 package prateek_gupta.foody.data;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,9 +18,9 @@ public class LocalDataSource {
         this.recipesDao = recipesDao;
     }
 
-    public List<RecipesEntity> readDatabase(){return recipesDao.readRecipes();}
+    public LiveData<List<RecipesEntity>> readDatabase(){return recipesDao.readRecipes();}
 
-    void insertRecipes(RecipesEntity recipesEntity){
+    public void insertRecipes(RecipesEntity recipesEntity){
         recipesDao.insertRecipes(recipesEntity);
     }
 

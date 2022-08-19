@@ -16,4 +16,12 @@ public class RecipesEntity {
     public RecipesEntity(FoodRecipe foodRecipe) {
         this.foodRecipe = foodRecipe;
     }
+
+    public FoodRecipe getFoodRecipe() {
+        return foodRecipe;
+    }
+
+    public void setFoodRecipe(FoodRecipe foodRecipe) {
+        this.foodRecipe = foodRecipe;
+    }
 }

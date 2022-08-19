@@ -25,7 +25,7 @@ public class DatabaseModule {
                 context,
                 RecipesDatabase.class,
                 Constants.DATABASE_NAME
-        ).build();
+        ).allowMainThreadQueries().build();
     }
 
     @Singleton
