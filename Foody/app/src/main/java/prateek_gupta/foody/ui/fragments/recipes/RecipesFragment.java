@@ -14,9 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.todkars.shimmer.ShimmerRecyclerView;
 
+import java.util.List;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import prateek_gupta.foody.R;
 import prateek_gupta.foody.adapters.RecipesAdapter;
+import prateek_gupta.foody.data.database.RecipesEntity;
+import prateek_gupta.foody.util.MyExtensionFunctions;
 import prateek_gupta.foody.util.NetworkResult;
 import prateek_gupta.foody.viewmodels.MainViewModel;
 import prateek_gupta.foody.viewmodels.RecipesViewModel;
@@ -53,7 +57,7 @@ public class RecipesFragment extends Fragment {
     }
 
     void readDatabase(){
-        mainViewModel.getReadRecipes().observe(this.getViewLifecycleOwner(),database->{
+        new MyExtensionFunctions<List<RecipesEntity>>().observeOnce(mainViewModel.getReadRecipes(), this.getViewLifecycleOwner(), database->{
             if (database.size()>0){
                 Log.d(TAG, "readDatabase: called");
                 mAdapter.setData(database.get(0).getFoodRecipe());
