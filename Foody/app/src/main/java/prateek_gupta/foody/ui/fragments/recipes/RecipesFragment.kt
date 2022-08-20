@@ -18,6 +18,7 @@ import prateek_gupta.foody.R
 import prateek_gupta.foody.viewmodels.RecipesViewModel
 import prateek_gupta.foody.adapters.RecipesAdapter
 import prateek_gupta.foody.util.NetworkResult
+import prateek_gupta.foody.util.observeOnce
 
 
 @AndroidEntryPoint
@@ -31,8 +32,10 @@ class RecipesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        recipesViewModel = ViewModelProvider(requireActivity()).get(RecipesViewModel::class.java)
+        mainViewModel = ViewModelProvider(requireActivity())
+            .get(MainViewModel::class.java)
+        recipesViewModel = ViewModelProvider(requireActivity())
+            .get(RecipesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -56,7 +59,7 @@ class RecipesFragment : Fragment() {
 
     private fun readDatabase() {
         lifecycleScope.launch {
-            mainViewModel.readRecipes.observe(viewLifecycleOwner) { database ->
+            mainViewModel.readRecipes.observeOnce(viewLifecycleOwner) { database ->
                 if (database.isNotEmpty()) {
                     Log.d(TAG, "readDatabase: called")
                     mAdapter.setData(database[0].foodRecipe)
