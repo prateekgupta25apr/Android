@@ -25,6 +25,7 @@ public class RecipesRowBinding {
                 .data(url)
                 .crossfade(600)
                 .target(view)
+                .error(R.drawable.ic_error_placeholder)
                 .build();
         imageLoader.enqueue(request);
 

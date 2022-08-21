@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import prateek_gupta.foody.R;
 import prateek_gupta.foody.adapters.RecipesAdapter;
 import prateek_gupta.foody.data.database.RecipesEntity;
+import prateek_gupta.foody.databinding.FragmentRecipesBinding;
 import prateek_gupta.foody.util.MyExtensionFunctions;
 import prateek_gupta.foody.util.NetworkResult;
 import prateek_gupta.foody.viewmodels.MainViewModel;
@@ -30,13 +31,13 @@ public class RecipesFragment extends Fragment {
 
     private static final String TAG = "RecipesFragment";
 
+    FragmentRecipesBinding binding;
+
     public MainViewModel mainViewModel;
 
     public RecipesViewModel recipesViewModel;
 
     public RecipesAdapter mAdapter=new RecipesAdapter();
-
-    public View mView;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -49,11 +50,13 @@ public class RecipesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mView=inflater.inflate(R.layout.fragment_recipes, container, false);
+        binding=FragmentRecipesBinding.inflate(inflater, container, false);
+        binding.setLifecycleOwner(this);
+        binding.setMainViewModel(mainViewModel);
 
         setupRecyclerView();
         readDatabase();
-        return mView;
+        return binding.getRoot();
     }
 
     void readDatabase(){
@@ -99,18 +102,18 @@ public class RecipesFragment extends Fragment {
     }
 
     void setupRecyclerView(){
-        ShimmerRecyclerView recyclerView=mView.findViewById(R.id.recyclerview);
+        ShimmerRecyclerView recyclerView= binding.recyclerview;
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         showShimmerEffect();
     }
 
     void showShimmerEffect(){
-        ShimmerRecyclerView recyclerView=mView.findViewById(R.id.recyclerview);
+        ShimmerRecyclerView recyclerView=binding.recyclerview;
         recyclerView.showShimmer();
     }
     void hideShimmerEffect(){
-        ShimmerRecyclerView recyclerView=mView.findViewById(R.id.recyclerview);
+        ShimmerRecyclerView recyclerView=binding.recyclerview;
         recyclerView.hideShimmer();
     }
 }
