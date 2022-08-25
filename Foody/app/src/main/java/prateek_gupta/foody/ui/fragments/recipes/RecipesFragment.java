@@ -10,6 +10,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.todkars.shimmer.ShimmerRecyclerView;
@@ -56,6 +59,9 @@ public class RecipesFragment extends Fragment {
 
         setupRecyclerView();
         readDatabase();
+
+
+        binding.recipesFab.setOnClickListener(v->Navigation.findNavController(this.requireActivity(),R.id.fragmentContainerView).navigate(R.id.action_recipesFragment_to_recipesBottomSheet));
         return binding.getRoot();
     }
 
