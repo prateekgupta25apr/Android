@@ -6,8 +6,8 @@ public class Constants {
 
     public static final String QUERY_NUMBER = "number";
     public static final String QUERY_API_KEY = "apiKey";
-    public static final String QUERY_TYPE = "type";
-    public static final String QUERY_DIET = "diet";
+    public static final String QUERY_TYPE = "main course";
+    public static final String QUERY_DIET = "gluten free";
     public static final String QUERY_ADD_RECIPE_INFORMATION = "addRecipeInformation";
     public static final String QUERY_FILL_INGREDIENTS = "fillIngredients";
 
