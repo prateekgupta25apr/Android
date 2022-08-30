@@ -1,6 +1,7 @@
 package prateek_gupta.foody.data;
 
 import android.content.Context;
+import android.util.Log;
 
 
 import androidx.datastore.core.DataStore;
@@ -18,6 +19,7 @@ import io.reactivex.rxjava3.core.Single;
 import prateek_gupta.foody.util.Constants;
 
 public class DataStoreRepository {
+    private static final String TAG = "DataStoreRepository";
     Context context;
     RxDataStore<Preferences> dataStore;
 
@@ -31,13 +33,13 @@ public class DataStoreRepository {
     Preferences.Key<String> selectedMealType =
             PreferencesKeys.stringKey(Constants.PREFERENCES_MEAL_TYPE);
     Preferences.Key<Integer> selectedMealTypeId =
-            PreferencesKeys.intKey(Constants.PREFERENCES_DIET_TYPE_ID);
+            PreferencesKeys.intKey(Constants.PREFERENCES_MEAL_TYPE_ID);
     Preferences.Key<String> selectedDietType =
             PreferencesKeys.stringKey(Constants.PREFERENCES_DIET_TYPE);
     Preferences.Key<Integer> selectedDietTypeId =
             PreferencesKeys.intKey(Constants.PREFERENCES_DIET_TYPE_ID);
 
-    void saveMealAndDietType(String mealType, Integer mealTypeId, String dietType,
+    public void saveMealAndDietType(String mealType, Integer mealTypeId, String dietType,
                              Integer dietTypeId) {
         dataStore.updateDataAsync(preferences -> {
             MutablePreferences mutablePreferences = preferences.toMutablePreferences();
@@ -49,7 +51,7 @@ public class DataStoreRepository {
         });
     }
 
-    Flowable<MealAndDietType> readMealAndDietType() {
+    public Flowable<MealAndDietType> readMealAndDietType() {
         return dataStore.data().map(preferences -> new MealAndDietType(
                 preferences.get(selectedMealType) != null ?
                         preferences.get(selectedMealType) : Constants.DEFAULT_MEAL_TYPE,
@@ -61,19 +63,7 @@ public class DataStoreRepository {
                         preferences.get(selectedDietTypeId) : 0));
     }
 
+
+
 }
 
-class MealAndDietType{
-    String selectedMealType;
-    Integer selectedMealTypeId;
-    String selectedDietType;
-    Integer selectedDietTypeId;
-
-    public MealAndDietType(String selectedMealType, Integer selectedMealTypeId,
-                           String selectedDietType, Integer selectedDietTypeId) {
-        this.selectedMealType = selectedMealType;
-        this.selectedMealTypeId = selectedMealTypeId;
-        this.selectedDietType = selectedDietType;
-        this.selectedDietTypeId = selectedDietTypeId;
-    }
-}
