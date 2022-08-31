@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
@@ -67,6 +69,9 @@ public class RecipesBottomSheet extends BottomSheetDialogFragment {
 
         mView.findViewById(R.id.apply_btn).setOnClickListener(view -> {
             recipesViewModel.saveMealAndDietType(mealTypeChip,mealTypeChipId,dietTypeChip,dietTypeChipId);
+            prateek_gupta.foody.ui.fragments.recipes.bottomSheets.RecipesBottomSheetDirections.ActionRecipesBottomSheetToRecipesFragment action=RecipesBottomSheetDirections.actionRecipesBottomSheetToRecipesFragment();
+            action.setBackFromBottomSheet(true);
+            Navigation.findNavController(this.requireActivity(),R.id.fragmentContainerView).navigate(action);
         });
         return mView;
     }

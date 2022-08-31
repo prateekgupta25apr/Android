@@ -4,6 +4,9 @@ plugins {
 
     // Hilt
     id 'dagger.hilt.android.plugin'
+
+    // To generate Directions class for navigation
+    id "androidx.navigation.safeargs"
 }
 
 android {

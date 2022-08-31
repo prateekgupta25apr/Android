@@ -57,9 +57,11 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.MyViewHo
     }
 
     public void setData(FoodRecipe newData) {
-        RecipesDiffUtils recipesDiffUtils = new RecipesDiffUtils(recipes, newData.results);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(recipesDiffUtils);
-        recipes = newData.results;
-        diffResult.dispatchUpdatesTo(this);
+        if (newData!=null){
+            RecipesDiffUtils recipesDiffUtils = new RecipesDiffUtils(recipes, newData.results);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(recipesDiffUtils);
+            recipes = newData.results;
+            diffResult.dispatchUpdatesTo(this);
+        }
     }
 }

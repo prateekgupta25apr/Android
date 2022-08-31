@@ -24,6 +24,7 @@ import prateek_gupta.foody.R;
 import prateek_gupta.foody.adapters.RecipesAdapter;
 import prateek_gupta.foody.data.database.RecipesEntity;
 import prateek_gupta.foody.databinding.FragmentRecipesBinding;
+import prateek_gupta.foody.ui.fragments.recipes.bottomSheets.RecipesBottomSheetDirections;
 import prateek_gupta.foody.util.MyExtensionFunctions;
 import prateek_gupta.foody.util.NetworkResult;
 import prateek_gupta.foody.viewmodels.MainViewModel;
@@ -33,6 +34,8 @@ import prateek_gupta.foody.viewmodels.RecipesViewModel;
 public class RecipesFragment extends Fragment {
 
     private static final String TAG = "RecipesFragment";
+
+    boolean backFromBottomSheet;
 
     FragmentRecipesBinding binding;
 
@@ -57,6 +60,8 @@ public class RecipesFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.setMainViewModel(mainViewModel);
 
+        backFromBottomSheet=RecipesFragmentArgs.fromBundle(getArguments()).getBackFromBottomSheet();
+
         setupRecyclerView();
         readDatabase();
 
@@ -67,7 +72,7 @@ public class RecipesFragment extends Fragment {
 
     void readDatabase(){
         new MyExtensionFunctions<List<RecipesEntity>>().observeOnce(mainViewModel.getReadRecipes(), this.getViewLifecycleOwner(), database->{
-            if (database.size()>0){
+            if (database.size()>0 && !backFromBottomSheet){
                 Log.d(TAG, "readDatabase: called");
                 mAdapter.setData(database.get(0).getFoodRecipe());
                 hideShimmerEffect();
@@ -94,7 +99,7 @@ public class RecipesFragment extends Fragment {
                 ).show();
             }
             else if (response instanceof NetworkResult.Loading){
-                hideShimmerEffect();
+                showShimmerEffect();
             }
         });
     }
@@ -111,10 +116,12 @@ public class RecipesFragment extends Fragment {
         ShimmerRecyclerView recyclerView= binding.recyclerview;
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        Log.d(TAG, "setupRecyclerView: calling show shimmer");
         showShimmerEffect();
     }
 
     void showShimmerEffect(){
+        Log.d(TAG, "setupRecyclerView: called show shimmer");
         ShimmerRecyclerView recyclerView=binding.recyclerview;
         recyclerView.showShimmer();
     }
