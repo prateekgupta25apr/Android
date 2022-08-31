@@ -11,6 +11,9 @@ plugins {
 
     // To use Data Binding
     id 'kotlin-kapt'
+
+    // To generate Directions class for navigation
+    id "androidx.navigation.safeargs.kotlin"
 }
 
 android {
