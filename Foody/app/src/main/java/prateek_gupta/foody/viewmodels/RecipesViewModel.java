@@ -8,10 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -40,7 +37,6 @@ public class RecipesViewModel extends AndroidViewModel {
     }
 
     public void saveMealAndDietType(String mealType,Integer mealTypeId,String dietType,Integer dietTypeId){
-        Log.d(TAG, "saveMealAndDietType: mealType"+mealType);
         dataStoreRepository.saveMealAndDietType(mealType,mealTypeId,dietType,dietTypeId);
     }
 
