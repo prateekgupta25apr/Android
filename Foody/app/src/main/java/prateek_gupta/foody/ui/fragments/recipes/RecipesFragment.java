@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -26,6 +27,7 @@ import prateek_gupta.foody.data.database.RecipesEntity;
 import prateek_gupta.foody.databinding.FragmentRecipesBinding;
 import prateek_gupta.foody.ui.fragments.recipes.bottomSheets.RecipesBottomSheetDirections;
 import prateek_gupta.foody.util.MyExtensionFunctions;
+import prateek_gupta.foody.util.NetworkListener;
 import prateek_gupta.foody.util.NetworkResult;
 import prateek_gupta.foody.viewmodels.MainViewModel;
 import prateek_gupta.foody.viewmodels.RecipesViewModel;
@@ -45,6 +47,8 @@ public class RecipesFragment extends Fragment {
 
     public RecipesAdapter mAdapter=new RecipesAdapter();
 
+    public NetworkListener networkListener;
+
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +67,28 @@ public class RecipesFragment extends Fragment {
         backFromBottomSheet=RecipesFragmentArgs.fromBundle(getArguments()).getBackFromBottomSheet();
 
         setupRecyclerView();
-        readDatabase();
 
+        recipesViewModel.readBackOnline.observe(getViewLifecycleOwner(),
+                value-> recipesViewModel.backOnline=value);
 
-        binding.recipesFab.setOnClickListener(v->Navigation.findNavController(this.requireActivity(),R.id.fragmentContainerView).navigate(R.id.action_recipesFragment_to_recipesBottomSheet));
+        networkListener=new NetworkListener();
+        networkListener.checkNetworkAvailability(requireContext()).observe(getViewLifecycleOwner(),status->{
+            Log.d("NetworkListener", status.toString());
+            recipesViewModel.networkStatus=status;
+            recipesViewModel.showNetworkStatus();
+            readDatabase();
+        });
+
+        binding.recipesFab.setOnClickListener(v->{
+            if (recipesViewModel.networkStatus)
+                Navigation.findNavController(this.requireActivity(),R.id.fragmentContainerView).navigate(R.id.action_recipesFragment_to_recipesBottomSheet);
+            else
+                recipesViewModel.showNetworkStatus();
+        });
         return binding.getRoot();
     }
 
-    void readDatabase(){
+     void readDatabase(){
         new MyExtensionFunctions<List<RecipesEntity>>().observeOnce(mainViewModel.getReadRecipes(), this.getViewLifecycleOwner(), database->{
             if (database.size()>0 && !backFromBottomSheet){
                 Log.d(TAG, "readDatabase: called");

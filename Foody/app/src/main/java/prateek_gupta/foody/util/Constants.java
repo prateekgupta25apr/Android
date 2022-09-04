@@ -24,4 +24,5 @@ public class Constants {
     public static final String PREFERENCES_MEAL_TYPE_ID = "mealTypeId";
     public static final String PREFERENCES_DIET_TYPE = "dietType";
     public static final String PREFERENCES_DIET_TYPE_ID = "dietTypeId";
+    public static final String PREFERENCES_BACK_ONLINE = "backOnline";
 }

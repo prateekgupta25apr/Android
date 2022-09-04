@@ -2,9 +2,12 @@ package prateek_gupta.foody.viewmodels;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +30,10 @@ public class RecipesViewModel extends AndroidViewModel {
     public Flowable<MealAndDietType> readMealAndDietType;
     String mealType=Constants.DEFAULT_MEAL_TYPE;
     String dietType=Constants.DEFAULT_DIET_TYPE;
+    public LiveData<Boolean> readBackOnline;
+
+    public Boolean networkStatus=false;
+    public Boolean backOnline=false;
 
     @Inject
     public RecipesViewModel(@NonNull @NotNull Application application,DataStoreRepository dataStoreRepository) {
@@ -34,10 +41,15 @@ public class RecipesViewModel extends AndroidViewModel {
         this.application=application;
         this.dataStoreRepository=dataStoreRepository;
         readMealAndDietType=dataStoreRepository.readMealAndDietType();
+        readBackOnline= LiveDataReactiveStreams.fromPublisher(dataStoreRepository.readBackOnline());
     }
 
     public void saveMealAndDietType(String mealType,Integer mealTypeId,String dietType,Integer dietTypeId){
         dataStoreRepository.saveMealAndDietType(mealType,mealTypeId,dietType,dietTypeId);
+    }
+
+    public void saveBackOnline(Boolean backOnline){
+        dataStoreRepository.saveBackOnline(backOnline);
     }
 
     public HashMap<String, String> applyQueries(){
@@ -53,5 +65,17 @@ public class RecipesViewModel extends AndroidViewModel {
         queries.put(Constants.QUERY_ADD_RECIPE_INFORMATION,"true");
         queries.put(Constants.QUERY_FILL_INGREDIENTS,"true");
         return queries;
+    }
+
+    public void showNetworkStatus(){
+        if (!networkStatus){
+            Toast.makeText(getApplication(), "No Internet Connection.", Toast.LENGTH_SHORT).show();
+            saveBackOnline(true);
+        }else {
+            if (backOnline) {
+                Toast.makeText(getApplication(), "We're back online.", Toast.LENGTH_SHORT).show();
+                saveBackOnline(false);
+            }
+        }
     }
 }

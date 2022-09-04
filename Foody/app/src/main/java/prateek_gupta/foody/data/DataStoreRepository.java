@@ -1,10 +1,7 @@
 package prateek_gupta.foody.data;
 
 import android.content.Context;
-import android.util.Log;
 
-
-import androidx.datastore.core.DataStore;
 import androidx.datastore.preferences.core.MutablePreferences;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
@@ -38,6 +35,9 @@ public class DataStoreRepository {
             PreferencesKeys.stringKey(Constants.PREFERENCES_DIET_TYPE);
     Preferences.Key<Integer> selectedDietTypeId =
             PreferencesKeys.intKey(Constants.PREFERENCES_DIET_TYPE_ID);
+    Preferences.Key<Boolean> backOnline =
+            PreferencesKeys.booleanKey(Constants.PREFERENCES_BACK_ONLINE);
+
 
     public void saveMealAndDietType(String mealType, Integer mealTypeId, String dietType,
                              Integer dietTypeId) {
@@ -47,6 +47,14 @@ public class DataStoreRepository {
             mutablePreferences.set(selectedMealTypeId, mealTypeId);
             mutablePreferences.set(selectedDietType, dietType);
             mutablePreferences.set(selectedDietTypeId, dietTypeId);
+            return Single.just(mutablePreferences);
+        });
+    }
+
+    public void saveBackOnline(Boolean backOnlineValue){
+        dataStore.updateDataAsync(preferences -> {
+            MutablePreferences mutablePreferences = preferences.toMutablePreferences();
+            mutablePreferences.set(backOnline, backOnlineValue);
             return Single.just(mutablePreferences);
         });
     }
@@ -63,7 +71,9 @@ public class DataStoreRepository {
                         preferences.get(selectedDietTypeId) : 0));
     }
 
-
-
+    public Flowable<Boolean> readBackOnline() {
+        return dataStore.data().map(preferences -> preferences.get(backOnline)!=null?
+                preferences.get(backOnline):false);
+    }
 }
 
