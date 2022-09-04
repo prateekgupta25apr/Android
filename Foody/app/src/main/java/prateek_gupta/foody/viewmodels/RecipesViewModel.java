@@ -67,6 +67,17 @@ public class RecipesViewModel extends AndroidViewModel {
         return queries;
     }
 
+    public HashMap<String, String> applySearchQuery(String searchQuery){
+        HashMap<String,String> queries=new HashMap<>();
+
+        queries.put(Constants.QUERY_SEARCH,searchQuery);
+        queries.put(Constants.QUERY_NUMBER,Constants.DEFAULT_RECIPES_NUMBER);
+        queries.put(Constants.QUERY_API_KEY,Constants.API_KEY);
+        queries.put(Constants.QUERY_ADD_RECIPE_INFORMATION,"true");
+        queries.put(Constants.QUERY_FILL_INGREDIENTS,"true");
+        return queries;
+    }
+
     public void showNetworkStatus(){
         if (!networkStatus){
             Toast.makeText(getApplication(), "No Internet Connection.", Toast.LENGTH_SHORT).show();

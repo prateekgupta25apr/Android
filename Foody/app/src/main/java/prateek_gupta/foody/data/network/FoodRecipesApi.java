@@ -10,4 +10,7 @@ import retrofit2.http.QueryMap;
 public interface FoodRecipesApi {
     @GET("/recipes/complexSearch")
     Call<FoodRecipe> getRecipes(@QueryMap Map<String, String> queries);
+
+    @GET("/recipes/complexSearch")
+    Call<FoodRecipe> searchRecipes(@QueryMap Map<String, String> searchQuery);
 }

@@ -20,4 +20,8 @@ public class RemoteDataSource {
     public Call<FoodRecipe> getRecipes(Map<String, String> queries){
         return foodRecipesApi.getRecipes(queries);
     }
+
+    public Call<FoodRecipe> searchRecipes(Map<String, String> searchQuery){
+        return foodRecipesApi.searchRecipes(searchQuery);
+    }
 }

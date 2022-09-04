@@ -115,6 +115,8 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        if (query!=null)
+            searchApiData(query);
         return true;
     }
 
@@ -138,6 +140,29 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
         Log.d(TAG, "requestApiData: called");
         mainViewModel.getRecipes(recipesViewModel.applyQueries());
         mainViewModel.recipesResponse.observe(this.getViewLifecycleOwner(),response->{
+            if (response instanceof NetworkResult.Success){
+                hideShimmerEffect();
+                if (response.data!=null)mAdapter.setData(response.data);
+            }
+            else if (response instanceof NetworkResult.Error){
+                hideShimmerEffect();
+                loadDataFromCache();
+                Toast.makeText(
+                        requireContext(),
+                        response.message,
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+            else if (response instanceof NetworkResult.Loading){
+                showShimmerEffect();
+            }
+        });
+    }
+
+    void searchApiData(String searchQuery){
+        showShimmerEffect();
+        mainViewModel.searchRecipes(recipesViewModel.applySearchQuery(searchQuery));
+        mainViewModel.searchedRecipesResponse.observe(this.getViewLifecycleOwner(),response->{
             if (response instanceof NetworkResult.Success){
                 hideShimmerEffect();
                 if (response.data!=null)mAdapter.setData(response.data);

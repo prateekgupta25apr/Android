@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -21,7 +20,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import kotlinx.coroutines.Dispatchers;
 import prateek_gupta.foody.data.Repository;
 import prateek_gupta.foody.data.database.RecipesEntity;
 import prateek_gupta.foody.models.FoodRecipe;
@@ -38,6 +36,7 @@ public class MainViewModel extends AndroidViewModel {
     Application application;
 
     public MutableLiveData<NetworkResult<FoodRecipe>> recipesResponse = new MutableLiveData<>();
+    public MutableLiveData<NetworkResult<FoodRecipe>> searchedRecipesResponse = new MutableLiveData<>();
     public LiveData<List<RecipesEntity>> readRecipes;
     @Inject
     public MainViewModel(@NonNull @NotNull Application application, Repository repository) {
@@ -60,6 +59,10 @@ public class MainViewModel extends AndroidViewModel {
     /** RETROFIT */
     public void getRecipes(Map<String, String> queries) {
         getRecipesSafeCall(queries);
+    }
+
+    public void searchRecipes(Map<String, String> searchQuery) {
+        searchRecipesSafeCall(searchQuery);
     }
 
     void getRecipesSafeCall(Map<String, String> queries) {
@@ -87,6 +90,29 @@ public class MainViewModel extends AndroidViewModel {
                 recipesResponse.setValue(new NetworkResult.Error<>("Recipes not found. 1"));
             }
         } else recipesResponse.setValue(new NetworkResult.Error<>("No Internet Connection."));
+    }
+
+    void searchRecipesSafeCall(Map<String, String> searchQuery) {
+        searchedRecipesResponse.setValue(new NetworkResult.Loading<>());
+        if (hasInternetConnection()) {
+            try {
+                Call<FoodRecipe> response = repository.getRemote().searchRecipes(searchQuery);
+                response.enqueue(new Callback<FoodRecipe>() {
+                    @Override
+                    public void onResponse(@NotNull Call<FoodRecipe> call, @NotNull Response<FoodRecipe> response) {
+                        searchedRecipesResponse.setValue(handleFoodRecipesResponse(response));
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<FoodRecipe> call, @NotNull Throwable t) {
+                    }
+                });
+
+
+            } catch (Exception e) {
+                searchedRecipesResponse.setValue(new NetworkResult.Error<>("Recipes not found. 1"));
+            }
+        } else searchedRecipesResponse.setValue(new NetworkResult.Error<>("No Internet Connection."));
     }
 
     private void offlineCacheRecipes(FoodRecipe foodRecipe) {
