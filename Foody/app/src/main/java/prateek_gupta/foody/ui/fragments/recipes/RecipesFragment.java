@@ -3,11 +3,16 @@ package prateek_gupta.foody.ui.fragments.recipes;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,7 +38,7 @@ import prateek_gupta.foody.viewmodels.MainViewModel;
 import prateek_gupta.foody.viewmodels.RecipesViewModel;
 
 @AndroidEntryPoint
-public class RecipesFragment extends Fragment {
+public class RecipesFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private static final String TAG = "RecipesFragment";
 
@@ -66,6 +71,8 @@ public class RecipesFragment extends Fragment {
 
         backFromBottomSheet=RecipesFragmentArgs.fromBundle(getArguments()).getBackFromBottomSheet();
 
+        setHasOptionsMenu(true);
+
         setupRecyclerView();
 
         recipesViewModel.readBackOnline.observe(getViewLifecycleOwner(),
@@ -88,7 +95,35 @@ public class RecipesFragment extends Fragment {
         return binding.getRoot();
     }
 
-     void readDatabase(){
+    void setupRecyclerView(){
+        ShimmerRecyclerView recyclerView= binding.recyclerview;
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        Log.d(TAG, "setupRecyclerView: calling show shimmer");
+        showShimmerEffect();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.recipes_menu,menu);
+
+        MenuItem search=menu.findItem(R.id.menu_search);
+        SearchView searchView= (SearchView) search.getActionView();
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return true;
+    }
+
+    void readDatabase(){
         new MyExtensionFunctions<List<RecipesEntity>>().observeOnce(mainViewModel.getReadRecipes(), this.getViewLifecycleOwner(), database->{
             if (database.size()>0 && !backFromBottomSheet){
                 Log.d(TAG, "readDatabase: called");
@@ -128,14 +163,6 @@ public class RecipesFragment extends Fragment {
                 mAdapter.setData(database.get(0).getFoodRecipe());
             }
         });
-    }
-
-    void setupRecyclerView(){
-        ShimmerRecyclerView recyclerView= binding.recyclerview;
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        Log.d(TAG, "setupRecyclerView: calling show shimmer");
-        showShimmerEffect();
     }
 
     void showShimmerEffect(){
