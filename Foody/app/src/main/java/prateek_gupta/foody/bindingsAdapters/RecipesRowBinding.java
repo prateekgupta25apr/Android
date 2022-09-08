@@ -4,8 +4,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
+import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
@@ -14,8 +16,21 @@ import coil.ImageLoader;
 import coil.request.ImageRequest;
 import kotlin.jvm.JvmStatic;
 import prateek_gupta.foody.R;
+import prateek_gupta.foody.models.Result;
+import prateek_gupta.foody.ui.fragments.recipes.RecipesFragmentDirections;
 
 public class RecipesRowBinding {
+
+    @BindingAdapter("onRecipeClickListener")
+    @JvmStatic
+    public static void onRecipeClickListener(ConstraintLayout constraintLayout, Result result){
+        constraintLayout.setOnClickListener(view -> {
+            RecipesFragmentDirections.ActionRecipesFragmentToDetailsActivity action=
+            RecipesFragmentDirections.actionRecipesFragmentToDetailsActivity(result);
+            Navigation.findNavController(constraintLayout).navigate(action);
+        });
+
+    }
 
     @BindingAdapter("loadImageFromUrl")
     @JvmStatic
