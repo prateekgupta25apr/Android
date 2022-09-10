@@ -5,13 +5,13 @@
     <item
         android:id="@+id/recipesFragment"
         android:icon="@drawable/ic_book"
-        android:title="@string/food_recipe" />
+        android:title="@string/recipes_fragment" />
     <item
         android:id="@+id/favouritesRecipesFragment"
         android:icon="@drawable/ic_star"
-        android:title="@string/favourites" />
+        android:title="@string/favorite_recipes_fragment" />
     <item
         android:id="@+id/foodJokeFragment"
         android:icon="@drawable/ic_food_joke"
-        android:title="@string/food_joke" />
+        android:title="@string/food_joke_fragment" />
 </menu>
