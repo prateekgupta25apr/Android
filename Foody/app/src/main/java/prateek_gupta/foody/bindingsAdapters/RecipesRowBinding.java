@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.navigation.Navigation;
 
+import org.jsoup.Jsoup;
+
 import javax.inject.Inject;
 
 import coil.Coil;
@@ -68,4 +70,15 @@ public class RecipesRowBinding {
                 ((ImageView) view).setColorFilter(ContextCompat.getColor(view.getContext(), R.color.green));
         }
     }
+
+    @BindingAdapter("parseHtml")
+    @JvmStatic
+    public static void parseHtml(TextView textView, String description){
+        if(description != null) {
+            String desc = Jsoup.parse(description).text();
+            textView.setText(desc);
+        }
+    }
+
+
 }

@@ -92,4 +92,7 @@ dependencies {
     // for LiveDataReactiveStreams
     implementation "androidx.lifecycle:lifecycle-reactivestreams:2.5.1"
 
+    // Jsoup
+    implementation 'org.jsoup:jsoup:1.13.1'
+
 }
