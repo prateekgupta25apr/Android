@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import coil.load
+import org.jsoup.Jsoup
 import prateek_gupta.foody.R
 import prateek_gupta.foody.models.Result
 import prateek_gupta.foody.ui.fragments.recipes.RecipesFragmentDirections
@@ -66,5 +67,17 @@ class RecipesRowBinding {
                     }
                 }
         }
+        @BindingAdapter("parseHtml")
+        @JvmStatic
+        fun parseHtml(textView: TextView, description: String?){
+            if(description != null) {
+                val desc = Jsoup.parse(description).text()
+                textView.text = desc
+            }
+        }
+
+
     }
+
+
 }
