@@ -2,7 +2,10 @@ package prateek_gupta.foody.util;
 
 public class Constants {
     public static final String BASE_URL = "https://api.spoonacular.com";
+    public static final String BASE_IMAGE_URL = "https://spoonacular.com/cdn/ingredients_100x100/";
     public static final String API_KEY = "d071d2fe21494fb59c91354cc8c28f8a";
+
+    public static final String  RECIPE_RESULT_KEY = "recipeBundle";
 
     public static final String QUERY_SEARCH = "query";
     public static final String QUERY_NUMBER = "number";

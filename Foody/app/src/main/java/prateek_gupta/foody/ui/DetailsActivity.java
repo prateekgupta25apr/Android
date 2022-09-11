@@ -20,6 +20,7 @@ import prateek_gupta.foody.adapters.PagerAdapter;
 import prateek_gupta.foody.ui.fragments.ingredients.IngredientsFragment;
 import prateek_gupta.foody.ui.fragments.instructions.InstructionsFragment;
 import prateek_gupta.foody.ui.fragments.overview.OverviewFragment;
+import prateek_gupta.foody.util.Constants;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -46,7 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
         titles.add("Instructions");
 
         Bundle resultBundle=new Bundle();
-        resultBundle.putParcelable("recipeBundle",DetailsActivityArgs.fromBundle(getIntent().getExtras()).getResult());
+        resultBundle.putParcelable(Constants.RECIPE_RESULT_KEY,DetailsActivityArgs.fromBundle(getIntent().getExtras()).getResult());
 
         PagerAdapter pagerAdapter=new PagerAdapter(resultBundle,fragments,titles,getSupportFragmentManager());
         ViewPager viewPager=findViewById(R.id.viewPager);

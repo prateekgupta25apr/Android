@@ -6,11 +6,11 @@ import java.util.List;
 
 import prateek_gupta.foody.models.Result;
 
-public class RecipesDiffUtils extends DiffUtil.Callback {
-    List<Result> oldList;
-    List<Result> newList;
+public class RecipesDiffUtils<T> extends DiffUtil.Callback {
+    List<T> oldList;
+    List<T> newList;
 
-    public RecipesDiffUtils(List<Result> oldList, List<Result> newList) {
+    public RecipesDiffUtils(List<T> oldList, List<T> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }

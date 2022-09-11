@@ -19,6 +19,7 @@ import coil.ImageLoader;
 import coil.request.ImageRequest;
 import prateek_gupta.foody.R;
 import prateek_gupta.foody.models.Result;
+import prateek_gupta.foody.util.Constants;
 
 
 public class OverviewFragment extends Fragment {
@@ -30,7 +31,7 @@ public class OverviewFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_overview, container, false);
 
         if (getArguments() != null) {
-            Result myBundle=getArguments().getParcelable("recipeBundle");
+            Result myBundle=getArguments().getParcelable(Constants.RECIPE_RESULT_KEY);
 
             ImageView mainImageView=view.findViewById(R.id.main_imageView);
             ImageLoader imageLoader = Coil.imageLoader(mainImageView.getContext());
