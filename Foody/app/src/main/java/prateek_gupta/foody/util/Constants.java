@@ -17,6 +17,7 @@ public class Constants {
 
     public static final String DATABASE_NAME="recipes_database";
     public static final String RECIPES_TABLE="recipes_table";
+    public static final String  FAVORITE_RECIPES_TABLE="favorite_recipes_table";
 
     // Bottom Sheet and Preferences
     public static final String DEFAULT_RECIPES_NUMBER = "50";

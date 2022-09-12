@@ -1,4 +1,4 @@
-package prateek_gupta.foody.data.database;
+package prateek_gupta.foody.data.database.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -9,9 +9,9 @@ import prateek_gupta.foody.util.Constants;
 @Entity(tableName=Constants.RECIPES_TABLE)
 public class RecipesEntity {
     @PrimaryKey(autoGenerate = false)
-    Integer id=0;
+    public Integer id=0;
 
-    FoodRecipe foodRecipe;
+    public FoodRecipe foodRecipe;
 
     public RecipesEntity(FoodRecipe foodRecipe) {
         this.foodRecipe = foodRecipe;

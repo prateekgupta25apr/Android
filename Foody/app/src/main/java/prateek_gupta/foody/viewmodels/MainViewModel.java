@@ -21,7 +21,8 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import prateek_gupta.foody.data.Repository;
-import prateek_gupta.foody.data.database.RecipesEntity;
+import prateek_gupta.foody.data.database.entities.FavoritesEntity;
+import prateek_gupta.foody.data.database.entities.RecipesEntity;
 import prateek_gupta.foody.models.FoodRecipe;
 import prateek_gupta.foody.util.NetworkResult;
 import retrofit2.Call;
@@ -38,6 +39,7 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<NetworkResult<FoodRecipe>> recipesResponse = new MutableLiveData<>();
     public MutableLiveData<NetworkResult<FoodRecipe>> searchedRecipesResponse = new MutableLiveData<>();
     public LiveData<List<RecipesEntity>> readRecipes;
+    public LiveData<List<FavoritesEntity>> readFavoriteRecipes;
     @Inject
     public MainViewModel(@NonNull @NotNull Application application, Repository repository) {
         super(application);
@@ -46,14 +48,31 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<RecipesEntity>> getReadRecipes() {
-        readRecipes=repository.getLocal().readDatabase();
+        readRecipes=repository.getLocal().readRecipes();
         return readRecipes;
+    }
+
+    public LiveData<List<FavoritesEntity>> getReadFavoriteRecipes(){
+        readFavoriteRecipes=repository.getLocal().readFavoriteRecipes();
+        return readFavoriteRecipes;
     }
 
     /** ROOM DATABASE */
 
     private void insertRecipes(RecipesEntity recipesEntity) {
         repository.getLocal().insertRecipes(recipesEntity);
+    }
+
+    private void insertFavoriteRecipe(FavoritesEntity favoritesEntity){
+        repository.getLocal().insertFavoriteRecipes(favoritesEntity);
+    }
+
+    private void deleteFavoriteRecipe(FavoritesEntity favoritesEntity){
+        repository.getLocal().deleteFavoriteRecipe(favoritesEntity);
+    }
+
+    private void deleteAllFavoriteRecipes(){
+        repository.getLocal().deleteAllFavoriteRecipes();
     }
 
     /** RETROFIT */

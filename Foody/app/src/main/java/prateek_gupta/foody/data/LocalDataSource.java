@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import kotlinx.coroutines.flow.Flow;
 import prateek_gupta.foody.data.database.RecipesDao;
-import prateek_gupta.foody.data.database.RecipesEntity;
+import prateek_gupta.foody.data.database.entities.FavoritesEntity;
+import prateek_gupta.foody.data.database.entities.RecipesEntity;
 
 public class LocalDataSource {
     public RecipesDao recipesDao;
@@ -18,10 +18,25 @@ public class LocalDataSource {
         this.recipesDao = recipesDao;
     }
 
-    public LiveData<List<RecipesEntity>> readDatabase(){return recipesDao.readRecipes();}
+    public LiveData<List<RecipesEntity>> readRecipes(){return recipesDao.readRecipes();}
+
+    public LiveData<List<FavoritesEntity>> readFavoriteRecipes(){
+        return recipesDao.readFavoriteRecipes();}
 
     public void insertRecipes(RecipesEntity recipesEntity){
         recipesDao.insertRecipes(recipesEntity);
+    }
+
+    public void insertFavoriteRecipes(FavoritesEntity favoritesEntity){
+        recipesDao.insertFavoriteRecipe(favoritesEntity);
+    }
+
+    public void deleteFavoriteRecipe(FavoritesEntity favoritesEntity){
+        recipesDao.deleteFavoriteRecipe(favoritesEntity);
+    }
+
+    public void deleteAllFavoriteRecipes(){
+        recipesDao.deleteAllFavoriteRecipes();
     }
 
 }
