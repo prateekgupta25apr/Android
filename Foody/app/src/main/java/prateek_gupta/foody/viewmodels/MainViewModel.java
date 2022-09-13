@@ -63,11 +63,11 @@ public class MainViewModel extends AndroidViewModel {
         repository.getLocal().insertRecipes(recipesEntity);
     }
 
-    private void insertFavoriteRecipe(FavoritesEntity favoritesEntity){
+    public void insertFavoriteRecipe(FavoritesEntity favoritesEntity){
         repository.getLocal().insertFavoriteRecipes(favoritesEntity);
     }
 
-    private void deleteFavoriteRecipe(FavoritesEntity favoritesEntity){
+    public void deleteFavoriteRecipe(FavoritesEntity favoritesEntity){
         repository.getLocal().deleteFavoriteRecipe(favoritesEntity);
     }
 

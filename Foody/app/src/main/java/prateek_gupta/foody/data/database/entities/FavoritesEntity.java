@@ -14,7 +14,7 @@ public class FavoritesEntity {
     public Result result;
 
     public FavoritesEntity(Integer id, Result result) {
-        this.id = id;
+        if (id>0)this.id=id;
         this.result = result;
     }
 }
