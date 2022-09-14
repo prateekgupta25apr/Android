@@ -5,14 +5,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import prateek_gupta.foody.R;
 import prateek_gupta.foody.data.database.entities.FavoritesEntity;
 import prateek_gupta.foody.databinding.FavoriteRecipesRowLayoutBinding;
+import prateek_gupta.foody.ui.fragments.favourites.FavouritesRecipesFragmentDirections;
 import prateek_gupta.foody.util.RecipesDiffUtils;
 
 public class FavoriteRecipesAdapter extends RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder> {
@@ -44,6 +47,12 @@ public class FavoriteRecipesAdapter extends RecyclerView.Adapter<FavoriteRecipes
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.bind(favoriteRecipes.get(position));
+
+        holder.itemView.findViewById(R.id.favoriteRecipesRowLayout).setOnClickListener(view -> {
+            FavouritesRecipesFragmentDirections.ActionFavouritesRecipesFragmentToDetailsActivity
+                    action=FavouritesRecipesFragmentDirections.actionFavouritesRecipesFragmentToDetailsActivity(favoriteRecipes.get(position).result);
+            Navigation.findNavController(holder.itemView).navigate(action);
+        });
     }
 
     @Override
