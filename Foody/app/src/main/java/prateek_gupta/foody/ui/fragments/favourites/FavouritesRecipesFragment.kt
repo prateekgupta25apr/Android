@@ -16,7 +16,7 @@ import prateek_gupta.foody.viewmodels.MainViewModel
 @AndroidEntryPoint
 class FavouritesRecipesFragment : Fragment() {
 
-    private val mAdapter: FavoriteRecipesAdapter by lazy { FavoriteRecipesAdapter() }
+    private val mAdapter: FavoriteRecipesAdapter by lazy { FavoriteRecipesAdapter(requireActivity()) }
     private val mainViewModel: MainViewModel by viewModels()
 
     private var _binding: FragmentFavouriteBinding? = null

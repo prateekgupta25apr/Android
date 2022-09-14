@@ -1,18 +1,21 @@
 package prateek_gupta.foody.adapters
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.favorite_recipes_row_layout.view.*
 import kotlinx.android.synthetic.main.fragment_favourite.view.*
+import prateek_gupta.foody.R
 import prateek_gupta.foody.data.database.entities.FavoritesEntity
 import prateek_gupta.foody.databinding.FavoriteRecipesRowLayoutBinding
 import prateek_gupta.foody.ui.fragments.favourites.FavouritesRecipesFragmentDirections
 import prateek_gupta.foody.util.RecipesDiffUtils
 
-class FavoriteRecipesAdapter : RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>() {
+class FavoriteRecipesAdapter(val requireActivity:FragmentActivity) : RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>(),
+            ActionMode.Callback{
 
     private var favoriteRecipes = emptyList<FavoritesEntity>()
 
@@ -46,10 +49,33 @@ class FavoriteRecipesAdapter : RecyclerView.Adapter<FavoriteRecipesAdapter.MyVie
             val action=FavouritesRecipesFragmentDirections.actionFavouritesRecipesFragmentToDetailsActivity(favoriteRecipes[position].result)
             holder.itemView.findNavController().navigate(action)
         }
+
+        holder.itemView.favoriteRecipesRowLayout.setOnLongClickListener {
+            requireActivity.startActionMode(this)
+            true
+        }
     }
 
     override fun getItemCount(): Int {
         return favoriteRecipes.size
+    }
+
+    override fun onCreateActionMode(actionMode: ActionMode?, menu: Menu?): Boolean {
+        actionMode?.menuInflater?.inflate(R.menu.favorites_contextual_menu,menu)
+        applyStatusBarColor(R.color.contextualStatusBarColor)
+        return true
+    }
+
+    override fun onPrepareActionMode(actionMode: ActionMode?, menu: Menu?): Boolean {
+        return true
+    }
+
+    override fun onActionItemClicked(actionMode: ActionMode?, menu: MenuItem?): Boolean {
+        return true
+    }
+
+    override fun onDestroyActionMode(actionMode: ActionMode?) {
+        applyStatusBarColor(R.color.statusBarColor)
     }
 
     fun setData(newFavoriteRecipes: List<FavoritesEntity>){
@@ -58,5 +84,10 @@ class FavoriteRecipesAdapter : RecyclerView.Adapter<FavoriteRecipesAdapter.MyVie
         val diffUtilResult = DiffUtil.calculateDiff(favoriteRecipesDiffUtil)
         favoriteRecipes = newFavoriteRecipes
         diffUtilResult.dispatchUpdatesTo(this)
+    }
+
+    private fun applyStatusBarColor(color: Int) {
+        requireActivity.window.statusBarColor =
+            ContextCompat.getColor(requireActivity, color)
     }
 }
