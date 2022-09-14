@@ -7,7 +7,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.favorite_recipes_row_layout.view.*
-import kotlinx.android.synthetic.main.fragment_favourite.view.*
 import prateek_gupta.foody.R
 import prateek_gupta.foody.data.database.entities.FavoritesEntity
 import prateek_gupta.foody.databinding.FavoriteRecipesRowLayoutBinding
@@ -18,6 +17,11 @@ class FavoriteRecipesAdapter(val requireActivity:FragmentActivity) : RecyclerVie
             ActionMode.Callback{
 
     private var favoriteRecipes = emptyList<FavoritesEntity>()
+
+    private var multiSelection = false
+
+    private var selectedRecipes = arrayListOf<FavoritesEntity>()
+    private var myViewHolders = arrayListOf<MyViewHolder>()
 
     class MyViewHolder(private val binding: FavoriteRecipesRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -42,18 +46,48 @@ class FavoriteRecipesAdapter(val requireActivity:FragmentActivity) : RecyclerVie
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val selectedRecipe = favoriteRecipes[position]
-        holder.bind(selectedRecipe)
+        myViewHolders.add(holder)
+        val currentRecipe = favoriteRecipes[position]
+        holder.bind(currentRecipe)
 
         holder.itemView.favoriteRecipesRowLayout.setOnClickListener{
-            val action=FavouritesRecipesFragmentDirections.actionFavouritesRecipesFragmentToDetailsActivity(favoriteRecipes[position].result)
-            holder.itemView.findNavController().navigate(action)
-        }
+            if (multiSelection) {
+                applySelection(holder, currentRecipe)
+            } else {
+                val action =
+                    FavouritesRecipesFragmentDirections.actionFavouritesRecipesFragmentToDetailsActivity(currentRecipe.result)
+                holder.itemView.findNavController().navigate(action)
+            }}
 
         holder.itemView.favoriteRecipesRowLayout.setOnLongClickListener {
-            requireActivity.startActionMode(this)
-            true
+            if (!multiSelection) {
+                multiSelection = true
+                requireActivity.startActionMode(this)
+                applySelection(holder, currentRecipe)
+                true
+            } else {
+                multiSelection = false
+                false
+            }
         }
+    }
+
+     private fun applySelection(holder: MyViewHolder, currentRecipe: FavoritesEntity) {
+        if (selectedRecipes.contains(currentRecipe)) {
+            selectedRecipes.remove(currentRecipe)
+            changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor)
+        } else {
+            selectedRecipes.add(currentRecipe)
+            changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.colorPrimary)
+        }
+    }
+
+    private fun changeRecipeStyle(holder: MyViewHolder, backgroundColor: Int, strokeColor: Int) {
+        holder.itemView.favoriteRecipesRowLayout.setBackgroundColor(
+            ContextCompat.getColor(requireActivity, backgroundColor)
+        )
+        holder.itemView.favorite_row_cardView.strokeColor =
+            ContextCompat.getColor(requireActivity, strokeColor)
     }
 
     override fun getItemCount(): Int {
@@ -75,6 +109,11 @@ class FavoriteRecipesAdapter(val requireActivity:FragmentActivity) : RecyclerVie
     }
 
     override fun onDestroyActionMode(actionMode: ActionMode?) {
+        myViewHolders.forEach { holder ->
+            changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor)
+        }
+        multiSelection = false
+        selectedRecipes.clear()
         applyStatusBarColor(R.color.statusBarColor)
     }
 
