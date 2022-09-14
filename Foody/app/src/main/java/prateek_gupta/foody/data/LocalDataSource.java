@@ -20,7 +20,7 @@ public class LocalDataSource {
 
     public LiveData<List<RecipesEntity>> readRecipes(){return recipesDao.readRecipes();}
 
-    public LiveData<List<FavoritesEntity>> readFavoriteRecipes(){
+    public List<FavoritesEntity> readFavoriteRecipes(){
         return recipesDao.readFavoriteRecipes();}
 
     public void insertRecipes(RecipesEntity recipesEntity){

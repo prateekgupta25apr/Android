@@ -39,7 +39,7 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<NetworkResult<FoodRecipe>> recipesResponse = new MutableLiveData<>();
     public MutableLiveData<NetworkResult<FoodRecipe>> searchedRecipesResponse = new MutableLiveData<>();
     public LiveData<List<RecipesEntity>> readRecipes;
-    public LiveData<List<FavoritesEntity>> readFavoriteRecipes;
+    public MutableLiveData<List<FavoritesEntity>> readFavoriteRecipes;
     @Inject
     public MainViewModel(@NonNull @NotNull Application application, Repository repository) {
         super(application);
@@ -53,7 +53,8 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<FavoritesEntity>> getReadFavoriteRecipes(){
-        readFavoriteRecipes=repository.getLocal().readFavoriteRecipes();
+        this.readFavoriteRecipes=new MutableLiveData<>();
+        this.readFavoriteRecipes.setValue(repository.getLocal().readFavoriteRecipes());
         return readFavoriteRecipes;
     }
 
