@@ -1,10 +1,15 @@
 package prateek_gupta.foody.adapters;
 
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +23,15 @@ import prateek_gupta.foody.databinding.FavoriteRecipesRowLayoutBinding;
 import prateek_gupta.foody.ui.fragments.favourites.FavouritesRecipesFragmentDirections;
 import prateek_gupta.foody.util.RecipesDiffUtils;
 
-public class FavoriteRecipesAdapter extends RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder> {
+public class FavoriteRecipesAdapter extends
+        RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder> implements ActionMode.Callback {
     List<FavoritesEntity> favoriteRecipes=new ArrayList<>();
+
+    FragmentActivity requireActivity;
+
+    public FavoriteRecipesAdapter(FragmentActivity requireActivity) {
+        this.requireActivity = requireActivity;
+    }
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
         FavoriteRecipesRowLayoutBinding binding;
@@ -53,11 +65,39 @@ public class FavoriteRecipesAdapter extends RecyclerView.Adapter<FavoriteRecipes
                     action=FavouritesRecipesFragmentDirections.actionFavouritesRecipesFragmentToDetailsActivity(favoriteRecipes.get(position).result);
             Navigation.findNavController(holder.itemView).navigate(action);
         });
+
+        holder.itemView.findViewById(R.id.favoriteRecipesRowLayout).setOnLongClickListener(view -> {
+            requireActivity.startActionMode(this);
+            return true;
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return favoriteRecipes.size();
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        actionMode.getMenuInflater().inflate(R.menu.favorites_contextual_menu,menu);
+        applyStatusBarColor(R.color.contextualStatusBarColor);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+        return true;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        applyStatusBarColor(R.color.statusBarColor);
     }
 
     public void setData(List<FavoritesEntity> newFavoriteRecipes){
@@ -66,5 +106,11 @@ public class FavoriteRecipesAdapter extends RecyclerView.Adapter<FavoriteRecipes
         DiffUtil.DiffResult diffUtilResult = DiffUtil.calculateDiff(favoriteRecipesDiffUtil);
         favoriteRecipes = newFavoriteRecipes;
         diffUtilResult.dispatchUpdatesTo(this);
+    }
+
+    void applyStatusBarColor(Integer color) {
+        requireActivity.getWindow().
+                setStatusBarColor(ContextCompat.getColor(requireActivity, color));
+
     }
 }

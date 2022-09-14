@@ -23,13 +23,14 @@ import prateek_gupta.foody.viewmodels.RecipesViewModel;
 public class FavouritesRecipesFragment extends Fragment {
 
     MainViewModel mainViewModel;
-    FavoriteRecipesAdapter mAdapter=new FavoriteRecipesAdapter();
+    FavoriteRecipesAdapter mAdapter;
     FragmentFavouritesRecepiesBinding binding;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainViewModel= new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        mAdapter=new FavoriteRecipesAdapter(requireActivity());
     }
 
     @Override
