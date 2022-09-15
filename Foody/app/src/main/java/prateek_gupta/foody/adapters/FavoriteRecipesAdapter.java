@@ -15,15 +15,18 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import prateek_gupta.foody.R;
+import prateek_gupta.foody.bindingsAdapters.FavoriteRecipesBinding;
 import prateek_gupta.foody.data.database.entities.FavoritesEntity;
 import prateek_gupta.foody.databinding.FavoriteRecipesRowLayoutBinding;
 import prateek_gupta.foody.ui.fragments.favourites.FavouritesRecipesFragmentDirections;
 import prateek_gupta.foody.util.RecipesDiffUtils;
+import prateek_gupta.foody.viewmodels.MainViewModel;
 
 public class FavoriteRecipesAdapter extends
         RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder> implements ActionMode.Callback {
@@ -35,8 +38,13 @@ public class FavoriteRecipesAdapter extends
     List<FavoritesEntity> selectedRecipes =new ArrayList<>();
     List<MyViewHolder> myViewHolders =new ArrayList<>();
 
-    public FavoriteRecipesAdapter(FragmentActivity requireActivity) {
+    ActionMode mActionMode;
+    MainViewModel mainViewModel;
+    View rootView;
+
+    public FavoriteRecipesAdapter(FragmentActivity requireActivity , MainViewModel mainViewModel) {
         this.requireActivity = requireActivity;
+        this.mainViewModel=mainViewModel;
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
@@ -64,6 +72,7 @@ public class FavoriteRecipesAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        rootView=holder.itemView.getRootView();
         myViewHolders.add(holder);
         holder.bind(favoriteRecipes.get(position));
 
@@ -100,6 +109,7 @@ public class FavoriteRecipesAdapter extends
             selectedRecipes.add(currentRecipe);
             changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.colorPrimary);
         }
+        applyActionModeTitle();
     }
 
     void changeRecipeStyle(MyViewHolder holder, Integer backgroundColor, Integer strokeColor) {
@@ -111,6 +121,20 @@ public class FavoriteRecipesAdapter extends
 
     }
 
+    void applyActionModeTitle() {
+        switch (selectedRecipes.size()) {
+            case 0 :
+                mActionMode.finish();
+                break;
+            case 1 :
+                mActionMode.setTitle(selectedRecipes.size()+" item selected");
+                break;
+            default :
+                mActionMode.setTitle(selectedRecipes.size()+" items selected");
+
+        }
+    }
+
     @Override
     public int getItemCount() {
         return favoriteRecipes.size();
@@ -119,6 +143,7 @@ public class FavoriteRecipesAdapter extends
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
         actionMode.getMenuInflater().inflate(R.menu.favorites_contextual_menu,menu);
+        mActionMode=actionMode;
         applyStatusBarColor(R.color.contextualStatusBarColor);
         return true;
     }
@@ -130,6 +155,16 @@ public class FavoriteRecipesAdapter extends
 
     @Override
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.delete_favorite_recipe_menu) {
+            for (FavoritesEntity favoritesEntity:selectedRecipes){
+                mainViewModel.deleteFavoriteRecipe(favoritesEntity);
+            }
+            showSnackBar(selectedRecipes.size()+" Recipe/s removed.");
+
+            multiSelection = false;
+            selectedRecipes.clear();
+            mActionMode.finish();
+        }
         return true;
     }
 
@@ -139,6 +174,10 @@ public class FavoriteRecipesAdapter extends
             changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor);
         multiSelection = false;
         selectedRecipes.clear();
+        mainViewModel.getReadFavoriteRecipes();
+        FavoriteRecipesBinding.setDataAndViewVisibility(requireActivity.findViewById(R.id.favoriteRecipesRecyclerView),mainViewModel.readFavoriteRecipes.getValue(),this);
+        FavoriteRecipesBinding.setDataAndViewVisibility(requireActivity.findViewById(R.id.no_data_imageView),mainViewModel.readFavoriteRecipes.getValue(),this);
+        FavoriteRecipesBinding.setDataAndViewVisibility(requireActivity.findViewById(R.id.no_data_textView),mainViewModel.readFavoriteRecipes.getValue(),this);
         applyStatusBarColor(R.color.statusBarColor);
     }
 
@@ -154,5 +193,19 @@ public class FavoriteRecipesAdapter extends
         requireActivity.getWindow().
                 setStatusBarColor(ContextCompat.getColor(requireActivity, color));
 
+    }
+
+    void showSnackBar(String message ) {
+        Snackbar.make(
+                rootView,
+                message,
+                Snackbar.LENGTH_SHORT
+        ).setAction("Okay",view -> {}).show();
+    }
+
+    public void clearContextualActionMode() {
+        if (this.mActionMode!=null) {
+            mActionMode.finish();
+        }
     }
 }

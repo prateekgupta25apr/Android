@@ -72,7 +72,7 @@ public class MainViewModel extends AndroidViewModel {
         repository.getLocal().deleteFavoriteRecipe(favoritesEntity);
     }
 
-    private void deleteAllFavoriteRecipes(){
+    public void deleteAllFavoriteRecipes(){
         repository.getLocal().deleteAllFavoriteRecipes();
     }
 
