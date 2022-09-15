@@ -42,7 +42,6 @@ public class FavouritesRecipesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        System.out.println("Test: On create view called");
         mainViewModel= new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         mAdapter=new FavoriteRecipesAdapter(requireActivity(),mainViewModel);
         binding=FragmentFavouritesRecepiesBinding.inflate(inflater, container, false);
@@ -66,10 +65,10 @@ public class FavouritesRecipesFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.deleteAll_favorite_recipes_menu){
             mainViewModel.deleteAllFavoriteRecipes();
-            mainViewModel.getReadFavoriteRecipes();
-            FavoriteRecipesBinding.setDataAndViewVisibility(binding.getRoot().findViewById(R.id.favoriteRecipesRecyclerView),mainViewModel.readFavoriteRecipes.getValue(),mAdapter);
-            FavoriteRecipesBinding.setDataAndViewVisibility(binding.getRoot().findViewById(R.id.no_data_imageView),mainViewModel.readFavoriteRecipes.getValue(),mAdapter);
-            FavoriteRecipesBinding.setDataAndViewVisibility(binding.getRoot().findViewById(R.id.no_data_textView),mainViewModel.readFavoriteRecipes.getValue(),mAdapter);
+//            mainViewModel.getReadFavoriteRecipes();
+//            FavoriteRecipesBinding.setDataAndViewVisibility(binding.getRoot().findViewById(R.id.favoriteRecipesRecyclerView),mainViewModel.readFavoriteRecipes.getValue(),mAdapter);
+//            FavoriteRecipesBinding.setDataAndViewVisibility(binding.getRoot().findViewById(R.id.no_data_imageView),mainViewModel.readFavoriteRecipes.getValue(),mAdapter);
+//            FavoriteRecipesBinding.setDataAndViewVisibility(binding.getRoot().findViewById(R.id.no_data_textView),mainViewModel.readFavoriteRecipes.getValue(),mAdapter);
             showSnackBar();
         }
         return super.onOptionsItemSelected(item);

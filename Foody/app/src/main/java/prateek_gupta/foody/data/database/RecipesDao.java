@@ -25,7 +25,7 @@ public interface RecipesDao {
     LiveData<List<RecipesEntity>> readRecipes();
 
     @Query("SELECT * FROM favorite_recipes_table ORDER BY id ASC")
-    List<FavoritesEntity> readFavoriteRecipes();
+    LiveData<List<FavoritesEntity>> readFavoriteRecipes();
 
     @Delete
     void deleteFavoriteRecipe(FavoritesEntity favoritesEntity);

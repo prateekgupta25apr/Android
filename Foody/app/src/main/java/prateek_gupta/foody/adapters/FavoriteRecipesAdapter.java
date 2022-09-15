@@ -174,10 +174,6 @@ public class FavoriteRecipesAdapter extends
             changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor);
         multiSelection = false;
         selectedRecipes.clear();
-        mainViewModel.getReadFavoriteRecipes();
-        FavoriteRecipesBinding.setDataAndViewVisibility(requireActivity.findViewById(R.id.favoriteRecipesRecyclerView),mainViewModel.readFavoriteRecipes.getValue(),this);
-        FavoriteRecipesBinding.setDataAndViewVisibility(requireActivity.findViewById(R.id.no_data_imageView),mainViewModel.readFavoriteRecipes.getValue(),this);
-        FavoriteRecipesBinding.setDataAndViewVisibility(requireActivity.findViewById(R.id.no_data_textView),mainViewModel.readFavoriteRecipes.getValue(),this);
         applyStatusBarColor(R.color.statusBarColor);
     }
 

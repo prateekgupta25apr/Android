@@ -10,6 +10,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MutableLiveData;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,11 +41,17 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<NetworkResult<FoodRecipe>> searchedRecipesResponse = new MutableLiveData<>();
     public LiveData<List<RecipesEntity>> readRecipes;
     public MutableLiveData<List<FavoritesEntity>> readFavoriteRecipes;
+    public LiveData<List<FavoritesEntity>> temp;
     @Inject
     public MainViewModel(@NonNull @NotNull Application application, Repository repository) {
         super(application);
         this.repository = repository;
         this.application = application;
+        readFavoriteRecipes=new MutableLiveData<>();
+        repository.getLocal().readFavoriteRecipes().observeForever(e->{
+            readFavoriteRecipes.setValue(e);
+        });
+
     }
 
     public LiveData<List<RecipesEntity>> getReadRecipes() {
@@ -53,8 +60,6 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<FavoritesEntity>> getReadFavoriteRecipes(){
-        this.readFavoriteRecipes=new MutableLiveData<>();
-        this.readFavoriteRecipes.setValue(repository.getLocal().readFavoriteRecipes());
         return readFavoriteRecipes;
     }
 
