@@ -19,6 +19,7 @@ class FavoriteRecipesBinding {
             favoritesEntity: List<FavoritesEntity>?,
             mAdapter: FavoriteRecipesAdapter?
         ) {
+            println("Test: called")
             if (favoritesEntity.isNullOrEmpty()) {
                 when (view) {
                     is ImageView -> {

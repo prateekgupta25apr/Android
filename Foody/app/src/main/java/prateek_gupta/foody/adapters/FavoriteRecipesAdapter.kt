@@ -175,7 +175,7 @@ class FavoriteRecipesAdapter(
     }
 
     fun clearContextualActionMode() {
-        if (this::mActionMode.isInitialized) {
+        if (::mActionMode.isInitialized) {
             mActionMode.finish()
         }
     }
