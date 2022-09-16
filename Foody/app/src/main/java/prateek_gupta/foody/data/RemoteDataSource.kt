@@ -1,6 +1,7 @@
 package prateek_gupta.foody.data
 
 import prateek_gupta.foody.data.network.FoodRecipesApi
+import prateek_gupta.foody.models.FoodJoke
 import prateek_gupta.foody.models.FoodRecipe
 import retrofit2.Response
 import javax.inject.Inject
@@ -15,6 +16,10 @@ class RemoteDataSource @Inject constructor(
 
     suspend fun searchRecipes(searchQuery: Map<String, String>): Response<FoodRecipe> {
         return foodRecipesApi.searchRecipes(searchQuery)
+    }
+
+    suspend fun getFoodJoke(apiKey: String): Response<FoodJoke> {
+        return foodRecipesApi.getFoodJoke(apiKey)
     }
 
 }
