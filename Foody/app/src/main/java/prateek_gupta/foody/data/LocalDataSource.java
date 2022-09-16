@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import prateek_gupta.foody.data.database.RecipesDao;
 import prateek_gupta.foody.data.database.entities.FavoritesEntity;
+import prateek_gupta.foody.data.database.entities.FoodJokeEntity;
 import prateek_gupta.foody.data.database.entities.RecipesEntity;
 
 public class LocalDataSource {
@@ -23,12 +24,19 @@ public class LocalDataSource {
     public LiveData<List<FavoritesEntity>> readFavoriteRecipes(){
         return recipesDao.readFavoriteRecipes();}
 
+    public LiveData<List<FoodJokeEntity>> readFoodJoke(){
+        return recipesDao.readFoodJoke();}
+
     public void insertRecipes(RecipesEntity recipesEntity){
         recipesDao.insertRecipes(recipesEntity);
     }
 
     public void insertFavoriteRecipes(FavoritesEntity favoritesEntity){
         recipesDao.insertFavoriteRecipe(favoritesEntity);
+    }
+
+    public void insertFoodJoke(FoodJokeEntity foodJokeEntity){
+        recipesDao.insertFoodJoke(foodJokeEntity);
     }
 
     public void deleteFavoriteRecipe(FavoritesEntity favoritesEntity){

@@ -23,7 +23,9 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import prateek_gupta.foody.data.Repository;
 import prateek_gupta.foody.data.database.entities.FavoritesEntity;
+import prateek_gupta.foody.data.database.entities.FoodJokeEntity;
 import prateek_gupta.foody.data.database.entities.RecipesEntity;
+import prateek_gupta.foody.models.FoodJoke;
 import prateek_gupta.foody.models.FoodRecipe;
 import prateek_gupta.foody.util.NetworkResult;
 import retrofit2.Call;
@@ -39,9 +41,11 @@ public class MainViewModel extends AndroidViewModel {
 
     public MutableLiveData<NetworkResult<FoodRecipe>> recipesResponse = new MutableLiveData<>();
     public MutableLiveData<NetworkResult<FoodRecipe>> searchedRecipesResponse = new MutableLiveData<>();
+    public MutableLiveData<NetworkResult<FoodJoke>> foodJokeResponse = new MutableLiveData<>();
     public LiveData<List<RecipesEntity>> readRecipes;
     public MutableLiveData<List<FavoritesEntity>> readFavoriteRecipes;
-    public LiveData<List<FavoritesEntity>> temp;
+    public MutableLiveData<List<FoodJokeEntity>> readFoodJoke;
+
     @Inject
     public MainViewModel(@NonNull @NotNull Application application, Repository repository) {
         super(application);
@@ -50,6 +54,11 @@ public class MainViewModel extends AndroidViewModel {
         readFavoriteRecipes=new MutableLiveData<>();
         repository.getLocal().readFavoriteRecipes().observeForever(e->{
             readFavoriteRecipes.setValue(e);
+        });
+
+        readFoodJoke=new MutableLiveData<>();
+        repository.getLocal().readFoodJoke().observeForever(e->{
+            readFoodJoke.setValue(e);
         });
 
     }
@@ -73,6 +82,10 @@ public class MainViewModel extends AndroidViewModel {
         repository.getLocal().insertFavoriteRecipes(favoritesEntity);
     }
 
+    public void insertFoodJoke(FoodJokeEntity foodJokeEntity){
+        repository.getLocal().insertFoodJoke(foodJokeEntity);
+    }
+
     public void deleteFavoriteRecipe(FavoritesEntity favoritesEntity){
         repository.getLocal().deleteFavoriteRecipe(favoritesEntity);
     }
@@ -88,6 +101,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public void searchRecipes(Map<String, String> searchQuery) {
         searchRecipesSafeCall(searchQuery);
+    }
+
+    public void getFoodJoke(String apiKey) {
+        getFoodJokeSafeCall(apiKey);
     }
 
     void getRecipesSafeCall(Map<String, String> queries) {
@@ -140,9 +157,41 @@ public class MainViewModel extends AndroidViewModel {
         } else searchedRecipesResponse.setValue(new NetworkResult.Error<>("No Internet Connection."));
     }
 
+    void getFoodJokeSafeCall(String apiKey) {
+        foodJokeResponse.setValue(new NetworkResult.Loading<>());
+        if (hasInternetConnection()) {
+            try {
+                Call<FoodJoke> response = repository.getRemote().getFoodJoke(apiKey);
+                response.enqueue(new Callback<FoodJoke>() {
+                    @Override
+                    public void onResponse(@NotNull Call<FoodJoke> call, @NotNull Response<FoodJoke> response) {
+                        foodJokeResponse.setValue(handleFoodJokeResponse(response));
+                        if (foodJokeResponse.getValue()!=null){
+                            FoodJoke foodJoke = foodJokeResponse.getValue().data;
+                            offlineCacheFoodJoke(foodJoke);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<FoodJoke> call, @NotNull Throwable t) {
+                    }
+                });
+
+
+            } catch (Exception e) {
+                foodJokeResponse.setValue(new NetworkResult.Error<>("Recipes not found. 1"));
+            }
+        } else foodJokeResponse.setValue(new NetworkResult.Error<>("No Internet Connection."));
+    }
+
     private void offlineCacheRecipes(FoodRecipe foodRecipe) {
         RecipesEntity recipesEntity = new RecipesEntity(foodRecipe);
         insertRecipes(recipesEntity);
+    }
+
+    private void offlineCacheFoodJoke(FoodJoke foodJoke){
+        FoodJokeEntity foodJokeEntity=new FoodJokeEntity(foodJoke);
+        insertFoodJoke(foodJokeEntity);
     }
 
     NetworkResult<FoodRecipe> handleFoodRecipesResponse(Response<FoodRecipe> response) {
@@ -155,6 +204,17 @@ public class MainViewModel extends AndroidViewModel {
         } else if (response.isSuccessful()) {
             FoodRecipe foodRecipe = response.body();
             return new NetworkResult.Success<>(foodRecipe);
+        } else return new NetworkResult.Error<>(response.message());
+    }
+
+    NetworkResult<FoodJoke> handleFoodJokeResponse(Response<FoodJoke> response) {
+        if (response.message().contains("timeout"))
+            return new NetworkResult.Error<>("Timeout");
+        else if (response.code() == 402)
+            return new NetworkResult.Error<>("API Key Limited.");
+         else if (response.isSuccessful()) {
+            FoodJoke foodJoke = response.body();
+            return new NetworkResult.Success<>(foodJoke);
         } else return new NetworkResult.Error<>(response.message());
     }
 
