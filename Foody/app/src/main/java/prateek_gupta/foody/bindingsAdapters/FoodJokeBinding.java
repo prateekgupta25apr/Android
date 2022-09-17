@@ -2,6 +2,7 @@ package prateek_gupta.foody.bindingsAdapters;
 
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
@@ -37,5 +38,19 @@ public class FoodJokeBinding {
             else
                 view.setVisibility(View.VISIBLE);
         }
+    }
+
+    @BindingAdapter(value = {"readApiResponse4", "readDatabase4"}, requireAll = true)
+    @JvmStatic
+    public static void setErrorViewsVisibility(View view, NetworkResult<FoodJoke> apiResponse,List<FoodJokeEntity> database){
+        if (database!=null && database.size()==0){
+                view.setVisibility(View.VISIBLE);
+                if (view instanceof TextView){
+                        if (apiResponse!=null)
+                            ((TextView) view).setText(apiResponse.message);
+                }
+        }
+        if (apiResponse instanceof NetworkResult.Success)
+                view.setVisibility(View.INVISIBLE);
     }
 }

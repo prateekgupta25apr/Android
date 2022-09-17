@@ -1,13 +1,18 @@
 package prateek_gupta.foody.ui.fragments.foodJoke;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -26,6 +31,8 @@ public class FoodJokeFragment extends Fragment {
 
     FragmentFoodJokeBinding binding;
 
+    String foodJoke="No Food Joke";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +47,14 @@ public class FoodJokeFragment extends Fragment {
         binding.setLifecycleOwner(this.getViewLifecycleOwner());
         binding.setMainViewModel(mainViewModel);
 
+        setHasOptionsMenu(true);
+
         mainViewModel.getFoodJoke(Constants.API_KEY);
         mainViewModel.foodJokeResponse.observe(this.getViewLifecycleOwner(),response->{
 
             if (response instanceof NetworkResult.Success){
                 binding.foodJokeTextView.setText(response.data.getText());
+                foodJoke=response.data.getText();
             }else if (response instanceof NetworkResult.Error){
                 loadDataFromCache();
                 Toast.makeText(requireContext(),response.message,Toast.LENGTH_SHORT).show();
@@ -57,11 +67,31 @@ public class FoodJokeFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.food_joke_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.share_food_joke_menu){
+            Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, foodJoke);
+            shareIntent.setType("text/plain");
+
+            startActivity(shareIntent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     void loadDataFromCache(){
         mainViewModel.readFoodJoke.observe(getViewLifecycleOwner(),database->{
-            if (database!=null && database.size()>0)
+            if (database!=null && database.size()>0) {
                 binding.foodJokeTextView.setText(
                         database.get(0).getFoodJoke().getText());
+                foodJoke = database.get(0).getFoodJoke().getText();
+            }
         });
     }
 
