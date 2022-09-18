@@ -11,7 +11,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        tools:context=".ui.fragments.recipes.RecipesFragment">
 
         <com.todkars.shimmer.ShimmerRecyclerView
             android:id="@+id/recyclerview"
@@ -33,23 +35,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
             android:layout_marginBottom="24dp"
             android:clickable="true"
+            app:tint="@color/white"
+            android:src="@drawable/ic_restaurant"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/white"
-            app:srcCompat="@drawable/ic_restaurant"
-            android:focusable="true"
-            tools:ignore="VectorDrawableCompat" />
+            android:focusable="true" />
 
         <ImageView
             android:id="@+id/error_imageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:alpha="0.5"
             readApiResponse="@{mainViewModel.recipesResponse}"
             readDatabase="@{mainViewModel.readRecipes}"
+            android:alpha="0.5"
             android:src="@drawable/ic_sad"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -62,15 +62,16 @@
             android:id="@+id/error_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:alpha="0.5"
             readApiResponse2="@{mainViewModel.recipesResponse}"
             readDatabase2="@{mainViewModel.readRecipes}"
+            android:layout_marginTop="8dp"
+            android:alpha="0.5"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@+id/error_imageView"
             app:layout_constraintStart_toStartOf="@+id/error_imageView"
             app:layout_constraintTop_toBottomOf="@+id/error_imageView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
