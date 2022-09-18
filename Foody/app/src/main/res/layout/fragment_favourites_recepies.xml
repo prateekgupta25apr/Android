@@ -17,8 +17,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/lightGray"
-        tools:context=".ui.fragments.favorites.FavouritesRecipesFragment">
+        android:background="@color/backgroundColor"
+        tools:context=".ui.fragments.favorites.FavoriteRecipesFragment">
 
 
         <androidx.recyclerview.widget.RecyclerView
