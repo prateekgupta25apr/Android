@@ -7,18 +7,21 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import prateek_gupta.foody.R
+import prateek_gupta.foody.databinding.ActivityMainBinding
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding:ActivityMainBinding
+
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding=ActivityMainBinding.inflate(layoutInflater)
         setTheme(R.style.Theme_Foody)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.fragmentContainerView
@@ -30,8 +33,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        findViewById<BottomNavigationView>(R.id.bottomNavigationView).
-        setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(navController)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
     }

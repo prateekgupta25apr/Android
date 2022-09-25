@@ -25,7 +25,7 @@ class FavouritesRecipesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
@@ -56,8 +56,8 @@ class FavouritesRecipesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         mAdapter.clearContextualActionMode()
         _binding = null
     }

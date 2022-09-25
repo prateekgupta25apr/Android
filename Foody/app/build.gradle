@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-android'
 
     // To use the ids of the widgets as reference in the code
-    id 'kotlin-android-extensions'
+    // id 'kotlin-android-extensions'
 
     // To use hilt
     id 'dagger.hilt.android.plugin'
@@ -14,6 +14,9 @@ plugins {
 
     // To generate Directions class for navigation
     id "androidx.navigation.safeargs.kotlin"
+
+    // For @Parcelize and @RawValue annotations
+    id "kotlin-parcelize"
 }
 
 android {
@@ -45,7 +48,10 @@ android {
     }
 
     // For Data Binding
-    dataBinding{enabled=true}
+    buildFeatures{
+        dataBinding=true
+        viewBinding=true
+    }
 }
 
 dependencies {

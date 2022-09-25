@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.navArgs
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_details.*
 import prateek_gupta.foody.R
 import prateek_gupta.foody.adapters.PagerAdapter
 import prateek_gupta.foody.data.database.entities.FavoritesEntity
+import prateek_gupta.foody.databinding.ActivityDetailsBinding
 import prateek_gupta.foody.ui.fragments.ingredients.IngredientsFragment
 import prateek_gupta.foody.ui.fragments.instructions.InstructionsFragment
 import prateek_gupta.foody.ui.fragments.overview.OverviewFragment
@@ -25,6 +25,8 @@ import prateek_gupta.foody.viewmodels.MainViewModel
 class DetailsActivity : AppCompatActivity() {
     private val args by navArgs<DetailsActivityArgs>()
 
+    private lateinit var binding:ActivityDetailsBinding
+
     private val mainViewModel: MainViewModel by viewModels()
 
     private var recipeSaved = false
@@ -32,10 +34,11 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_details)
+        binding=ActivityDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setSupportActionBar(toolbar)
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
+        setSupportActionBar(binding.toolbar)
+        binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val fragments = ArrayList<Fragment>()
@@ -58,8 +61,8 @@ class DetailsActivity : AppCompatActivity() {
             supportFragmentManager
         )
 
-        viewPager.adapter = adapter
-        tabLayout.setupWithViewPager(viewPager)
+        binding.viewPager.adapter = adapter
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -113,7 +116,7 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun showSnackBar(message: String) {
         Snackbar.make(
-            detailsLayout,
+            binding.detailsLayout,
             message,
             Snackbar.LENGTH_SHORT
         ).setAction("Okay") {}

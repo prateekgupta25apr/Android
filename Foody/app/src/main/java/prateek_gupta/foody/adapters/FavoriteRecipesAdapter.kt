@@ -7,7 +7,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.favorite_recipes_row_layout.view.*
 import prateek_gupta.foody.R
 import prateek_gupta.foody.data.database.entities.FavoritesEntity
 import prateek_gupta.foody.databinding.FavoriteRecipesRowLayoutBinding
@@ -31,7 +30,7 @@ class FavoriteRecipesAdapter(
     private lateinit var mActionMode: ActionMode
     private lateinit var rootView: View
 
-    class MyViewHolder(private val binding: FavoriteRecipesRowLayoutBinding) :
+    class MyViewHolder(val binding: FavoriteRecipesRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(favoritesEntity: FavoritesEntity) {
@@ -59,7 +58,7 @@ class FavoriteRecipesAdapter(
         val currentRecipe = favoriteRecipes[position]
         holder.bind(currentRecipe)
 
-        holder.itemView.favoriteRecipesRowLayout.setOnClickListener{
+        holder.binding.favoriteRecipesRowLayout.setOnClickListener{
             if (multiSelection) {
                 applySelection(holder, currentRecipe)
             } else {
@@ -68,7 +67,7 @@ class FavoriteRecipesAdapter(
                 holder.itemView.findNavController().navigate(action)
             }}
 
-        holder.itemView.favoriteRecipesRowLayout.setOnLongClickListener {
+        holder.binding.favoriteRecipesRowLayout.setOnLongClickListener {
             if (!multiSelection) {
                 multiSelection = true
                 requireActivity.startActionMode(this)
@@ -93,10 +92,10 @@ class FavoriteRecipesAdapter(
     }
 
     private fun changeRecipeStyle(holder: MyViewHolder, backgroundColor: Int, strokeColor: Int) {
-        holder.itemView.favoriteRecipesRowLayout.setBackgroundColor(
+        holder.binding.favoriteRecipesRowLayout.setBackgroundColor(
             ContextCompat.getColor(requireActivity, backgroundColor)
         )
-        holder.itemView.favorite_row_cardView.strokeColor =
+        holder.binding.favoriteRowCardView.strokeColor =
             ContextCompat.getColor(requireActivity, strokeColor)
     }
 
