@@ -58,7 +58,7 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding=FragmentRecipesBinding.inflate(inflater, container, false);
@@ -194,5 +194,11 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
     void hideShimmerEffect(){
         ShimmerRecyclerView recyclerView=binding.recyclerview;
         recyclerView.hideShimmer();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding=null;
     }
 }

@@ -1,31 +1,26 @@
 package prateek_gupta.foody.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import prateek_gupta.foody.R;
 import prateek_gupta.foody.adapters.PagerAdapter;
 import prateek_gupta.foody.data.database.entities.FavoritesEntity;
-import prateek_gupta.foody.models.Result;
+import prateek_gupta.foody.databinding.ActivityDetailsBinding;
 import prateek_gupta.foody.ui.fragments.ingredients.IngredientsFragment;
 import prateek_gupta.foody.ui.fragments.instructions.InstructionsFragment;
 import prateek_gupta.foody.ui.fragments.overview.OverviewFragment;
@@ -37,17 +32,19 @@ public class DetailsActivity extends AppCompatActivity {
 
     MainViewModel mainViewModel;
 
+    ActivityDetailsBinding binding;
+
     boolean recipeSaved=false;
     int savedRecipeId=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        binding=ActivityDetailsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Toolbar toolbar= findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
-        setSupportActionBar(toolbar);
+        binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+        setSupportActionBar(binding.toolbar);
 
         if (getSupportActionBar()!=null)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -66,10 +63,8 @@ public class DetailsActivity extends AppCompatActivity {
         resultBundle.putParcelable(Constants.RECIPE_RESULT_KEY,DetailsActivityArgs.fromBundle(getIntent().getExtras()).getResult());
 
         PagerAdapter pagerAdapter=new PagerAdapter(resultBundle,fragments,titles,getSupportFragmentManager());
-        ViewPager viewPager=findViewById(R.id.viewPager);
-        viewPager.setAdapter(pagerAdapter);
-        TabLayout tabLayout=findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
+        binding.viewPager.setAdapter(pagerAdapter);
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
 
         mainViewModel=new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -140,7 +135,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     void showSnackBar(String message) {
         Snackbar.make(
-                findViewById(R.id.detailsLayout),
+                binding.detailsLayout,
                 message,
                 Snackbar.LENGTH_SHORT
         ).setAction("Okay", v->{}).show();

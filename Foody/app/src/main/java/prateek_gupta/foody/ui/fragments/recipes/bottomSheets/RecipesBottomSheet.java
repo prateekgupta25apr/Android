@@ -6,10 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -19,15 +19,15 @@ import com.google.android.material.chip.ChipGroup;
 import java.util.Locale;
 
 import prateek_gupta.foody.R;
+import prateek_gupta.foody.databinding.RecipesBottomSheetBinding;
 import prateek_gupta.foody.util.Constants;
 import prateek_gupta.foody.viewmodels.RecipesViewModel;
 
 
 public class RecipesBottomSheet extends BottomSheetDialogFragment {
-
-    private static final String TAG = "RecipesBottomSheet";
-
     RecipesViewModel recipesViewModel;
+
+    RecipesBottomSheetBinding binding;
 
     String mealTypeChip = Constants.DEFAULT_MEAL_TYPE;
     Integer mealTypeChipId = 0;
@@ -41,39 +41,37 @@ public class RecipesBottomSheet extends BottomSheetDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View mView= inflater.inflate(R.layout.recipes_bottom_sheet, container, false);
+        binding= RecipesBottomSheetBinding.inflate(inflater, container, false);
 
         LiveDataReactiveStreams.fromPublisher(recipesViewModel.readMealAndDietType).observe(this.getViewLifecycleOwner(),value->{
             mealTypeChip= value.getSelectedMealType();
             dietTypeChip= value.getSelectedDietType();
-            updateChip(value.getSelectedMealTypeId(), mView.findViewById(R.id.mealType_chipGroup));
-            updateChip(value.getSelectedDietTypeId(), mView.findViewById(R.id.dietType_chipGroup));
+            updateChip(value.getSelectedMealTypeId(), binding.mealTypeChipGroup);
+            updateChip(value.getSelectedDietTypeId(), binding.dietTypeChipGroup);
         });
 
-        ChipGroup mealTypeChipGroup=mView.findViewById(R.id.mealType_chipGroup);
-        mealTypeChipGroup.setOnCheckedStateChangeListener((group, selectedChipId) -> {
+        binding.mealTypeChipGroup.setOnCheckedStateChangeListener((group, selectedChipId) -> {
             Chip chip= group.findViewById(selectedChipId.get(0));
             mealTypeChip=chip.getText().toString().toLowerCase(Locale.ROOT);
             mealTypeChipId=selectedChipId.get(0);
         });
 
-        ChipGroup dietTypeChipGroup=mView.findViewById(R.id.dietType_chipGroup);
-        dietTypeChipGroup.setOnCheckedStateChangeListener((group, selectedChipId) -> {
+        binding.dietTypeChipGroup.setOnCheckedStateChangeListener((group, selectedChipId) -> {
             Chip chip= group.findViewById(selectedChipId.get(0));
             dietTypeChip=chip.getText().toString().toLowerCase(Locale.ROOT);
             dietTypeChipId=selectedChipId.get(0);
         });
 
-        mView.findViewById(R.id.apply_btn).setOnClickListener(view -> {
+        binding.applyBtn.setOnClickListener(view -> {
             recipesViewModel.saveMealAndDietType(mealTypeChip,mealTypeChipId,dietTypeChip,dietTypeChipId);
             prateek_gupta.foody.ui.fragments.recipes.bottomSheets.RecipesBottomSheetDirections.ActionRecipesBottomSheetToRecipesFragment action=RecipesBottomSheetDirections.actionRecipesBottomSheetToRecipesFragment();
             action.setBackFromBottomSheet(true);
             Navigation.findNavController(this.requireActivity(),R.id.fragmentContainerView).navigate(action);
         });
-        return mView;
+        return binding.getRoot();
     }
 
     void updateChip(Integer chipId, ChipGroup chipGroup) {
@@ -85,5 +83,11 @@ public class RecipesBottomSheet extends BottomSheetDialogFragment {
                 Log.d("RecipesBottomSheet", e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding=null;
     }
 }

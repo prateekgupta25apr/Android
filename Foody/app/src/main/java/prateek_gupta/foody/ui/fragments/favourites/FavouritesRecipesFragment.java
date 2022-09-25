@@ -1,6 +1,12 @@
 package prateek_gupta.foody.ui.fragments.favourites;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,22 +15,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import prateek_gupta.foody.R;
 import prateek_gupta.foody.adapters.FavoriteRecipesAdapter;
-import prateek_gupta.foody.bindingsAdapters.FavoriteRecipesBinding;
 import prateek_gupta.foody.databinding.FragmentFavouritesRecepiesBinding;
 import prateek_gupta.foody.viewmodels.MainViewModel;
-import prateek_gupta.foody.viewmodels.RecipesViewModel;
 
 @AndroidEntryPoint
 public class FavouritesRecipesFragment extends Fragment {
@@ -39,7 +36,7 @@ public class FavouritesRecipesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mainViewModel= new ViewModelProvider(requireActivity()).get(MainViewModel.class);
@@ -80,8 +77,8 @@ public class FavouritesRecipesFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         mAdapter.clearContextualActionMode();
         binding=null;
     }

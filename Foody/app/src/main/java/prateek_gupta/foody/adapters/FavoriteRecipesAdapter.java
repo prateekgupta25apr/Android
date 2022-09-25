@@ -14,14 +14,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import prateek_gupta.foody.R;
-import prateek_gupta.foody.bindingsAdapters.FavoriteRecipesBinding;
 import prateek_gupta.foody.data.database.entities.FavoritesEntity;
 import prateek_gupta.foody.databinding.FavoriteRecipesRowLayoutBinding;
 import prateek_gupta.foody.ui.fragments.favourites.FavouritesRecipesFragmentDirections;
@@ -76,7 +74,7 @@ public class FavoriteRecipesAdapter extends
         myViewHolders.add(holder);
         holder.bind(favoriteRecipes.get(position));
 
-        holder.itemView.findViewById(R.id.favoriteRecipesRowLayout).setOnClickListener(view -> {
+        holder.binding.favoriteRecipesRowLayout.setOnClickListener(view -> {
             if (multiSelection) {
                 applySelection(holder, favoriteRecipes.get(position));
             } else {
@@ -87,7 +85,7 @@ public class FavoriteRecipesAdapter extends
         });
 
 
-        holder.itemView.findViewById(R.id.favoriteRecipesRowLayout).setOnLongClickListener(view -> {
+        holder.binding.favoriteRecipesRowLayout.setOnLongClickListener(view -> {
             if (!multiSelection) {
                 multiSelection = true;
                 requireActivity.startActionMode(this);
@@ -113,11 +111,10 @@ public class FavoriteRecipesAdapter extends
     }
 
     void changeRecipeStyle(MyViewHolder holder, Integer backgroundColor, Integer strokeColor) {
-        holder.itemView.findViewById(R.id.favoriteRecipesRowLayout).setBackgroundColor(
+        holder.binding.favoriteRecipesRowLayout.setBackgroundColor(
                 ContextCompat.getColor(requireActivity, backgroundColor)
         );
-        MaterialCardView cardView= holder.itemView.findViewById(R.id.favorite_row_cardView);
-        cardView.setStrokeColor(ContextCompat.getColor(requireActivity, strokeColor));
+        holder.binding.favoriteRowCardView.setStrokeColor(ContextCompat.getColor(requireActivity, strokeColor));
 
     }
 

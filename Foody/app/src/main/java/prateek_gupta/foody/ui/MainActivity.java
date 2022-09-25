@@ -4,26 +4,27 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import dagger.hilt.android.AndroidEntryPoint;
 import prateek_gupta.foody.R;
+import prateek_gupta.foody.databinding.ActivityMainBinding;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     NavController navController;
 
+    ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_Foody);
-        setContentView(R.layout.activity_main);
+        binding=ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
@@ -38,9 +39,8 @@ public class MainActivity extends AppCompatActivity {
                         R.id.favouritesRecipesFragment,
                         R.id.foodJokeFragment).build();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         if (navController != null) {
-            NavigationUI.setupWithNavController(bottomNavigationView, navController);
+            NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
         }
         if (navController != null) {
             NavigationUI.setupActionBarWithNavController(this, navController,
