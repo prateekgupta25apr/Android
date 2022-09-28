@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +63,12 @@ public class DetailsActivity extends AppCompatActivity {
         Bundle resultBundle=new Bundle();
         resultBundle.putParcelable(Constants.RECIPE_RESULT_KEY,DetailsActivityArgs.fromBundle(getIntent().getExtras()).getResult());
 
-        PagerAdapter pagerAdapter=new PagerAdapter(resultBundle,fragments,titles,getSupportFragmentManager());
-        binding.viewPager.setAdapter(pagerAdapter);
-        binding.tabLayout.setupWithViewPager(binding.viewPager);
+        PagerAdapter pagerAdapter=new PagerAdapter(resultBundle,fragments,this);
+        binding.viewPager2.setAdapter(pagerAdapter);
+        new TabLayoutMediator(binding.tabLayout,binding.viewPager2,((tab, position) ->
+                tab.setText(titles.get(position)))).attach();
+
+
 
         mainViewModel=new ViewModelProvider(this).get(MainViewModel.class);
 
