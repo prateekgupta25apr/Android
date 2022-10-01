@@ -3,8 +3,9 @@ package prateek_gupta.foody.data;
 import javax.inject.Inject;
 
 import dagger.hilt.android.scopes.ActivityRetainedScoped;
+import dagger.hilt.android.scopes.ViewModelScoped;
 
-@ActivityRetainedScoped
+@ViewModelScoped
 public class Repository {
     RemoteDataSource remote;
     LocalDataSource local;

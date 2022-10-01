@@ -74,6 +74,8 @@ public class FavoriteRecipesAdapter extends
         myViewHolders.add(holder);
         holder.bind(favoriteRecipes.get(position));
 
+        saveItemStateOnScroll(favoriteRecipes.get(position), holder);
+
         holder.binding.favoriteRecipesRowLayout.setOnClickListener(view -> {
             if (multiSelection) {
                 applySelection(holder, favoriteRecipes.get(position));
@@ -92,11 +94,19 @@ public class FavoriteRecipesAdapter extends
                 applySelection(holder, favoriteRecipes.get(position));
                 return true;
             } else {
-                multiSelection = false;
-                return false;
+                applySelection(holder, favoriteRecipes.get(position));
+                return true;
             }
         });
 
+    }
+
+    void saveItemStateOnScroll(FavoritesEntity currentRecipe, MyViewHolder holder){
+        if (selectedRecipes.contains(currentRecipe)) {
+            changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.colorPrimary);
+        } else {
+            changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor);
+        }
     }
 
     void applySelection(MyViewHolder holder , FavoritesEntity currentRecipe ) {
@@ -122,6 +132,7 @@ public class FavoriteRecipesAdapter extends
         switch (selectedRecipes.size()) {
             case 0 :
                 mActionMode.finish();
+                multiSelection = false;
                 break;
             case 1 :
                 mActionMode.setTitle(selectedRecipes.size()+" item selected");
