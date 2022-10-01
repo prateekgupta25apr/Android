@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.List;
 
@@ -92,10 +91,8 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     void setupRecyclerView(){
-        ShimmerRecyclerView recyclerView= binding.recyclerview;
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        Log.d(TAG, "setupRecyclerView: calling show shimmer");
+        binding.recyclerview.setAdapter(mAdapter);
+        binding.recyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
         showShimmerEffect();
     }
 
@@ -187,13 +184,14 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
     }
 
     void showShimmerEffect(){
-        Log.d(TAG, "setupRecyclerView: called show shimmer");
-        ShimmerRecyclerView recyclerView=binding.recyclerview;
-        recyclerView.showShimmer();
+        binding.shimmerFrameLayout.startShimmer();
+        binding.shimmerFrameLayout.setVisibility(View.VISIBLE);
+        binding.recyclerview.setVisibility(View.GONE);
     }
     void hideShimmerEffect(){
-        ShimmerRecyclerView recyclerView=binding.recyclerview;
-        recyclerView.hideShimmer();
+        binding.shimmerFrameLayout.stopShimmer();
+        binding.shimmerFrameLayout.setVisibility(View.GONE);
+        binding.recyclerview.setVisibility(View.VISIBLE);
     }
 
     @Override
