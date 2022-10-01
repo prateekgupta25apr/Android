@@ -136,6 +136,7 @@ public class RecipesFragment extends Fragment implements SearchView.OnQueryTextL
             if (response instanceof NetworkResult.Success){
                 hideShimmerEffect();
                 if (response.data!=null)mAdapter.setData(response.data);
+                recipesViewModel.saveMealAndDietType();
             }
             else if (response instanceof NetworkResult.Error){
                 hideShimmerEffect();

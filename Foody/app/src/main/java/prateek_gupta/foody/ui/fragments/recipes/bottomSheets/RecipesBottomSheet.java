@@ -66,7 +66,7 @@ public class RecipesBottomSheet extends BottomSheetDialogFragment {
         });
 
         binding.applyBtn.setOnClickListener(view -> {
-            recipesViewModel.saveMealAndDietType(mealTypeChip,mealTypeChipId,dietTypeChip,dietTypeChipId);
+            recipesViewModel.saveMealAndDietTypeTemp(mealTypeChip,mealTypeChipId,dietTypeChip,dietTypeChipId);
             prateek_gupta.foody.ui.fragments.recipes.bottomSheets.RecipesBottomSheetDirections.ActionRecipesBottomSheetToRecipesFragment action=RecipesBottomSheetDirections.actionRecipesBottomSheetToRecipesFragment();
             action.setBackFromBottomSheet(true);
             Navigation.findNavController(this.requireActivity(),R.id.fragmentContainerView).navigate(action);
@@ -79,6 +79,7 @@ public class RecipesBottomSheet extends BottomSheetDialogFragment {
             try {
                 Chip chip=chipGroup.findViewById(chipId);
                 chip.setChecked(true);
+                chipGroup.requestChildFocus(chip,chip);
             } catch (Exception e ) {
                 Log.d("RecipesBottomSheet", e.getMessage());
             }

@@ -64,6 +64,7 @@ public class DetailsActivity extends AppCompatActivity {
         resultBundle.putParcelable(Constants.RECIPE_RESULT_KEY,DetailsActivityArgs.fromBundle(getIntent().getExtras()).getResult());
 
         PagerAdapter pagerAdapter=new PagerAdapter(resultBundle,fragments,this);
+        binding.viewPager2.setUserInputEnabled(false);
         binding.viewPager2.setAdapter(pagerAdapter);
         new TabLayoutMediator(binding.tabLayout,binding.viewPager2,((tab, position) ->
                 tab.setText(titles.get(position)))).attach();

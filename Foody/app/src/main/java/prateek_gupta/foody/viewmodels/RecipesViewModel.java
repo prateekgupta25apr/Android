@@ -28,8 +28,7 @@ public class RecipesViewModel extends AndroidViewModel {
     DataStoreRepository dataStoreRepository;
     Application application;
     public Flowable<MealAndDietType> readMealAndDietType;
-    String mealType=Constants.DEFAULT_MEAL_TYPE;
-    String dietType=Constants.DEFAULT_DIET_TYPE;
+    MealAndDietType mealAndDietType;
     public LiveData<Boolean> readBackOnline;
 
     public Boolean networkStatus=false;
@@ -44,8 +43,16 @@ public class RecipesViewModel extends AndroidViewModel {
         readBackOnline= LiveDataReactiveStreams.fromPublisher(dataStoreRepository.readBackOnline());
     }
 
-    public void saveMealAndDietType(String mealType,Integer mealTypeId,String dietType,Integer dietTypeId){
-        dataStoreRepository.saveMealAndDietType(mealType,mealTypeId,dietType,dietTypeId);
+    public void saveMealAndDietType(){
+        dataStoreRepository.saveMealAndDietType(
+                mealAndDietType.selectedMealType,
+                mealAndDietType.selectedMealTypeId,
+                mealAndDietType.selectedDietType,
+                mealAndDietType.selectedDietTypeId);
+    }
+
+    public void saveMealAndDietTypeTemp(String mealType,Integer mealTypeId,String dietType,Integer dietTypeId){
+        mealAndDietType=new MealAndDietType(mealType,mealTypeId,dietType,dietTypeId);
     }
 
     public void saveBackOnline(Boolean backOnline){
@@ -54,14 +61,11 @@ public class RecipesViewModel extends AndroidViewModel {
 
     public HashMap<String, String> applyQueries(){
         HashMap<String,String> queries=new HashMap<>();
-        MealAndDietType mealAndDietType= readMealAndDietType.blockingFirst();
-        mealType=mealAndDietType.selectedMealType;
-        dietType=mealAndDietType.selectedDietType;
 
         queries.put(Constants.QUERY_NUMBER,Constants.DEFAULT_RECIPES_NUMBER);
         queries.put(Constants.QUERY_API_KEY,Constants.API_KEY);
-        queries.put(Constants.QUERY_TYPE,mealType);
-        queries.put(Constants.QUERY_DIET,dietType);
+        queries.put(Constants.QUERY_TYPE,mealAndDietType.selectedMealType);
+        queries.put(Constants.QUERY_DIET,mealAndDietType.selectedDietType);
         queries.put(Constants.QUERY_ADD_RECIPE_INFORMATION,"true");
         queries.put(Constants.QUERY_FILL_INGREDIENTS,"true");
         return queries;
