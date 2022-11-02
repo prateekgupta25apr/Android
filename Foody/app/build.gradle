@@ -12,7 +12,7 @@ plugins {
     // To use Data Binding
     id 'kotlin-kapt'
 
-    // To generate Directions class for navigation
+    // To generate Directions class for navigation (Safe Args)
     id "androidx.navigation.safeargs.kotlin"
 
     // For @Parcelize and @RawValue annotations
@@ -47,7 +47,7 @@ android {
         jvmTarget = '1.8'
     }
 
-    // For Data Binding
+    // For Data Binding and View Binding
     buildFeatures{
         dataBinding=true
         viewBinding=true
