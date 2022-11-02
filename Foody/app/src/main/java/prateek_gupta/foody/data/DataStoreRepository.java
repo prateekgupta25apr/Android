@@ -11,10 +11,12 @@ import androidx.datastore.rxjava3.RxDataStore;
 import javax.inject.Inject;
 
 import dagger.hilt.android.qualifiers.ApplicationContext;
+import dagger.hilt.android.scopes.ViewModelScoped;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import prateek_gupta.foody.util.Constants;
 
+@ViewModelScoped
 public class DataStoreRepository {
     private static final String TAG = "DataStoreRepository";
     Context context;

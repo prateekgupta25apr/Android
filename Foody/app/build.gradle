@@ -5,7 +5,7 @@ plugins {
     // Hilt
     id 'dagger.hilt.android.plugin'
 
-    // To generate Directions class for navigation
+    // To generate Directions class for navigation (Safe Args)
     id "androidx.navigation.safeargs"
 }
 
@@ -37,7 +37,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    // For Data Binding
+    // For Data Binding and View Binding
     buildFeatures{
         dataBinding=true
         viewBinding=true

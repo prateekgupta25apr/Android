@@ -11,8 +11,6 @@ import androidx.navigation.Navigation;
 
 import org.jsoup.Jsoup;
 
-import javax.inject.Inject;
-
 import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
@@ -25,7 +23,8 @@ public class RecipesRowBinding {
 
     @BindingAdapter("onRecipeClickListener")
     @JvmStatic
-    public static void onRecipeClickListener(ConstraintLayout constraintLayout, Result result){
+    public static void onRecipeClickListener(ConstraintLayout constraintLayout,
+                                             Result result){
         constraintLayout.setOnClickListener(view -> {
             RecipesFragmentDirections.ActionRecipesFragmentToDetailsActivity action=
             RecipesFragmentDirections.actionRecipesFragmentToDetailsActivity(result);
@@ -53,9 +52,11 @@ public class RecipesRowBinding {
     public static void applyVeganColor(View view,Boolean vegan){
         if (vegan){
             if (view instanceof TextView)
-                ((TextView) view).setTextColor(ContextCompat.getColor(view.getContext(), R.color.green));
+                ((TextView) view).setTextColor(ContextCompat.getColor(
+                        view.getContext(), R.color.green));
             else if (view instanceof ImageView)
-                ((ImageView) view).setColorFilter(ContextCompat.getColor(view.getContext(), R.color.green));
+                ((ImageView) view).setColorFilter(ContextCompat.getColor(
+                        view.getContext(), R.color.green));
         }
     }
 
