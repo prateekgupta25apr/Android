@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(fileIntent);
                 }
             }
-        },new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        },
+                new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
     }
 }
