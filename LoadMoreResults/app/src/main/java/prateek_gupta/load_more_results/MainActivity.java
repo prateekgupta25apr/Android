@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
         binding.button.setOnClickListener(view -> {
             if (i<=10){
                 ElementBinding elementBinding=ElementBinding.inflate(getLayoutInflater());
-                LinearLayout.LayoutParams params = new
-                        LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                ViewGroup.MarginLayoutParams params = new
+                        ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT,
+                        ViewGroup.MarginLayoutParams.WRAP_CONTENT);
                 params.setMargins(10, 10, 10, 10);
                 elementBinding.getRoot().setLayoutParams(params);
                 i++;
