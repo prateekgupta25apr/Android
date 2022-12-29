@@ -2,7 +2,7 @@ package prateek_gupta.load_more_data
 
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import prateek_gupta.load_more_data.databinding.ActivityMainBinding
 import prateek_gupta.load_more_data.databinding.ElementBinding
@@ -17,9 +17,9 @@ class MainActivity : AppCompatActivity() {
         binding.button.setOnClickListener {
             if (i <= 10) {
                 val elementBinding: ElementBinding = ElementBinding.inflate(layoutInflater)
-                val params = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+                val params = MarginLayoutParams(
+                    MarginLayoutParams.MATCH_PARENT,
+                    MarginLayoutParams.WRAP_CONTENT
                 )
                 params.setMargins(10, 10, 10, 10)
                 elementBinding.root.layoutParams = params
