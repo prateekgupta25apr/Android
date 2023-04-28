@@ -22,46 +22,60 @@ public class MainActivity extends AppCompatActivity {
         // Setting default value for showingProgress
         showingProgress=false;
 
-        // Setting default value for text for button
-        String buttonText="Log In";
-
-        // Setting value for text for button
-        binding.button.setText(buttonText);
-
-        // Setting on click listener for button
-        binding.button.setOnClickListener(view -> {
-            // When processing needs to be shown
-            if (!showingProgress){
-                // Updating text for the button
-                String updatedButtonText=buttonText+"      ";
-                binding.button.setText(updatedButtonText);
-
-                // Making progress bar visible
-                binding.progress.setVisibility(View.VISIBLE);
-
-                // Setting elevation for progress bar
-                ViewCompat.setElevation(binding.progress,6.0f);
-
-                // Reducing opacity of the button
-                binding.button.setAlpha(0.75f);
-
-                // Updating value for the showingProgress
+        ProgressButton progressButton = new ProgressButton(this,
+                binding.progressButton.progessButtonRoot,"Logging in...",
+                "Log in");
+        binding.progressButton.progessButtonRoot.setOnClickListener(view -> {
+            if (!showingProgress) {
+                progressButton.activateProgress();
                 showingProgress=true;
             }
-            // When processing need not to be shown
             else {
-                // Updating text for the button
-                binding.button.setText(buttonText);
-
-                // Making progress bar invisible
-                binding.progress.setVisibility(View.GONE);
-
-                // Increasing opacity of the button
-                binding.button.setAlpha(1);
-
-                // Updating value for the showingProgress
+                progressButton.deactivateProgress();
                 showingProgress=false;
             }
         });
+
+//        // Setting default value for text for button
+//        String buttonText="Log In";
+//
+//        // Setting value for text for button
+//        binding.button.setText(buttonText);
+//
+//        // Setting on click listener for button
+//        binding.button.setOnClickListener(view -> {
+//            // When processing needs to be shown
+//            if (!showingProgress){
+//                // Updating text for the button
+//                String updatedButtonText=buttonText+"      ";
+//                binding.button.setText(updatedButtonText);
+//
+//                // Making progress bar visible
+//                binding.progress.setVisibility(View.VISIBLE);
+//
+//                // Setting elevation for progress bar
+//                ViewCompat.setElevation(binding.progress,6.0f);
+//
+//                // Reducing opacity of the button
+//                binding.button.setAlpha(0.75f);
+//
+//                // Updating value for the showingProgress
+//                showingProgress=true;
+//            }
+//            // When processing need not to be shown
+//            else {
+//                // Updating text for the button
+//                binding.button.setText(buttonText);
+//
+//                // Making progress bar invisible
+//                binding.progress.setVisibility(View.GONE);
+//
+//                // Increasing opacity of the button
+//                binding.button.setAlpha(1);
+//
+//                // Updating value for the showingProgress
+//                showingProgress=false;
+//            }
+//        });
     }
 }

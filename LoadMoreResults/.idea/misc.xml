@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/Java/LoadMoreResults/app/src/main/res/drawable/circle.xml" value="0.124" />
+        <entry key="..\:/Android/Java/LoadMoreResults/app/src/main/res/drawable/circleshadow.xml" value="0.124" />
+        <entry key="..\:/Android/Java/LoadMoreResults/app/src/main/res/drawable/shadow.xml" value="0.124" />
         <entry key="..\:/Android/Java/LoadMoreResults/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Android/Java/LoadMoreResults/app/src/main/res/layout/element.xml" value="0.19895833333333332" />
+        <entry key="..\:/Android/Java/LoadMoreResults/app/src/main/res/layout/test.xml" value="0.19895833333333332" />
       </map>
     </option>
   </component>

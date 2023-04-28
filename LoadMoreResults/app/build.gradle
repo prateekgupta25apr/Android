@@ -31,6 +31,10 @@ android {
         dataBinding=true
         viewBinding=true
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -44,4 +48,6 @@ dependencies {
 
     // Data binding
     annotationProcessor "androidx.databinding:databinding-common:7.3.1"
+
+    api 'tk.zielony:carbon:0.16.0.1'
 }
