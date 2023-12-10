@@ -48,4 +48,10 @@ dependencies {
     implementation 'com.github.MikeOrtiz:TouchImageView:3.2.1'
 
     implementation 'androidx.core:core-splashscreen:1.0.0'
+
+    // Coil (Image Loading library)
+    implementation "io.coil-kt:coil:2.2.2"
+
+    // For Swipe Refresh Layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 }
