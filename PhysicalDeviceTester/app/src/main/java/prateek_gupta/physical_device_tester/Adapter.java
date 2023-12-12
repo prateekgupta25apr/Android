@@ -39,7 +39,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> {
     public void onBindViewHolder(@NonNull AdapterViewHolder holder, int position) {
         holder.itemBinding.getRoot().setBackgroundColor(colors.get(position));
         if (position>layoutManager.findLastVisibleItemPosition())
-            holder.itemBinding.getRoot().startAnimation(AnimationUtils.loadAnimation(holder.itemBinding.getRoot().getContext(), R.anim.move_up));
+            holder.itemBinding.getRoot().startAnimation(AnimationUtils.loadAnimation(holder.itemBinding.getRoot().getContext(), R.anim.move_from_bottom_to_center));
         else
             holder.itemBinding.getRoot().startAnimation(AnimationUtils.loadAnimation(holder.itemBinding.getRoot().getContext(), R.anim.move_down));
     }
