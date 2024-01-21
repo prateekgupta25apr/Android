@@ -1,16 +1,12 @@
 package prateek_gupta.physical_device_tester;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.os.Handler;
-import android.transition.Fade;
-import android.transition.Transition;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import prateek_gupta.physical_device_tester.databinding.ActivityMain2Binding;
-import prateek_gupta.physical_device_tester.databinding.ActivityMainBinding;
 
 public class MainActivity2 extends AppCompatActivity {
 
